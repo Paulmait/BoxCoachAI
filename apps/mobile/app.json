@@ -65,8 +65,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "your-eas-project-id"
+        "projectId": "213687d8-d615-4b99-b30a-1245c1b04a8a"
       }
-    }
+    },
+    "owner": "guampaul"
   }
 }
