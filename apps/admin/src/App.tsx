@@ -4,6 +4,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { UsersPage } from './pages/UsersPage';
 import { ViolationsPage } from './pages/ViolationsPage';
 import { InvestorReportPage } from './pages/InvestorReportPage';
+import { SettingsPage } from './pages/SettingsPage';
 import { useState } from 'react';
 
 export default function App() {
@@ -41,6 +42,7 @@ export default function App() {
     { id: 'users', label: 'Users' },
     { id: 'violations', label: 'Violations' },
     { id: 'investor', label: 'Investor Report' },
+    { id: 'settings', label: 'Settings' },
   ];
 
   return (
@@ -81,6 +83,7 @@ export default function App() {
         {currentPage === 'users' && <UsersPage />}
         {currentPage === 'violations' && <ViolationsPage />}
         {currentPage === 'investor' && <InvestorReportPage />}
+        {currentPage === 'settings' && <SettingsPage />}
       </main>
     </div>
   );
