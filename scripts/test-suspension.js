@@ -7,13 +7,20 @@
 
 const { createClient } = require('@supabase/supabase-js');
 
-const SUPABASE_URL = 'https://bvyzvqzpmlqvnkujjaao.supabase.co';
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2eXp2cXpwbWxxdm5rdWpqYWFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgxMDQ4NzgsImV4cCI6MjA2MzY4MDg3OH0.FUGAVoA9lm9cWxPVYdCQADwEPMdYdBcY9_PKN_WTu0Y';
+// Configuration - Load from environment variables
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://bvyzvqzpmlqvnkujjaao.supabase.co';
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 
 if (!SUPABASE_SERVICE_KEY) {
-  console.error('Error: SUPABASE_SERVICE_KEY environment variable is required');
-  console.log('Set it with: $env:SUPABASE_SERVICE_KEY="your-service-key"');
+  console.error('Error: SUPABASE_SERVICE_ROLE_KEY environment variable is required');
+  console.log('Set it with: export SUPABASE_SERVICE_ROLE_KEY="your-service-key"');
+  process.exit(1);
+}
+
+if (!SUPABASE_ANON_KEY) {
+  console.error('Error: SUPABASE_ANON_KEY environment variable is required');
+  console.log('Set it with: export SUPABASE_ANON_KEY="your-anon-key"');
   process.exit(1);
 }
 

@@ -5,9 +5,22 @@
 
 const https = require('https');
 
-const SUPABASE_URL = 'https://bvyzvqzpmlqvnkujjaao.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2eXp2cXpwbWxxdm5rdWpqYWFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk0NzMyNzQsImV4cCI6MjA4NTA0OTI3NH0.4kOcVWaq8jTE4HgpPua1WkqfYqIDahLZFnZ8832uI4M';
-const SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2eXp2cXpwbWxxdm5rdWpqYWFvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2OTQ3MzI3NCwiZXhwIjoyMDg1MDQ5Mjc0fQ.HZtUJoxEcX9GP1j1H9gbqVAzRIy-wy1SLgBMaS7N5i4';
+// Configuration - Load from environment variables
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://bvyzvqzpmlqvnkujjaao.supabase.co';
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+// Validate required environment variables
+if (!SUPABASE_ANON_KEY) {
+  console.error('ERROR: SUPABASE_ANON_KEY environment variable is required');
+  console.log('Set it with: export SUPABASE_ANON_KEY="your-anon-key"');
+  process.exit(1);
+}
+if (!SERVICE_ROLE_KEY) {
+  console.error('ERROR: SUPABASE_SERVICE_ROLE_KEY environment variable is required');
+  console.log('Set it with: export SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"');
+  process.exit(1);
+}
 
 // Test user credentials
 const TEST_EMAIL = 'testuser' + Date.now() + '@gmail.com';

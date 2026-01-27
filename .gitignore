@@ -19,7 +19,7 @@ web-build/
 android/
 ios/
 
-# Environment
+# Environment - NEVER commit .env files with secrets
 .env
 .env.local
 .env.development.local
@@ -27,6 +27,11 @@ ios/
 .env.production.local
 .env*.local
 apps/mobile/.env
+apps/admin/.env
+scripts/.env
+
+# Keep .env.example files (they contain placeholder values)
+!*.env.example
 
 # Claude Code
 .claude/
