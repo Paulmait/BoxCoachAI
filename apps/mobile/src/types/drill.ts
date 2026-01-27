@@ -19,7 +19,10 @@ export type DrillEquipment =
   | 'jump_rope'
   | 'ladder'
   | 'mirror'
-  | 'slip_bag';
+  | 'slip_bag'
+  | 'slip_rope'
+  | 'partner'
+  | 'focus_mitts';
 
 export interface DrillStep {
   order: number;

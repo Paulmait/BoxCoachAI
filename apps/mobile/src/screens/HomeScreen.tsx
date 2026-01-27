@@ -11,6 +11,7 @@ import { colors, spacing, fontSize, borderRadius, shadows } from '@/constants/th
 import { ScoreRing } from '@/components/ScoreRing';
 import { StreakDisplay } from '@/components/gamification/StreakDisplay';
 import { LevelProgress } from '@/components/gamification/LevelProgress';
+import { DailyTipCard } from '@/components/DailyTipCard';
 import { TRAINING_PLANS } from '@/data/trainingPlans';
 import { hapticLight } from '@/utils/haptics';
 import type { HomeStackScreenProps } from '@/navigation/types';
@@ -68,6 +69,9 @@ export function HomeScreen() {
         break;
       case 'achievements':
         navigation.navigate('Achievements');
+        break;
+      case 'weight':
+        navigation.navigate('Weight');
         break;
     }
   };
@@ -240,7 +244,19 @@ export function HomeScreen() {
               </View>
               <Text style={styles.quickActionText}>Badges</Text>
             </Pressable>
+            <Pressable style={styles.quickAction} onPress={() => handleQuickAction('weight')}>
+              <View style={[styles.quickActionIcon, { backgroundColor: colors.error + '20' }]}>
+                <Ionicons name="scale" size={24} color={colors.error} />
+              </View>
+              <Text style={styles.quickActionText}>Weight</Text>
+            </Pressable>
           </View>
+        </View>
+
+        {/* Daily Tip */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Coach's Corner</Text>
+          <DailyTipCard />
         </View>
 
         {/* Tips */}

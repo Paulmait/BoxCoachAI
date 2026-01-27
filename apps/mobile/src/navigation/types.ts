@@ -52,6 +52,7 @@ export type HomeStackParamList = {
   };
   ComboRandomizer: undefined;
   Journal: undefined;
+  Weight: undefined;
 };
 
 // Drill Stack

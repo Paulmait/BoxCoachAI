@@ -28,7 +28,10 @@ export type RootCause =
   | 'telegraphing'
   | 'recovery_position'
   | 'breathing'
-  | 'chin_exposure';
+  | 'chin_exposure'
+  | 'stationary_head'
+  | 'timing'
+  | 'distance_management';
 
 export interface BoundingBox {
   x: number; // percentage 0-100

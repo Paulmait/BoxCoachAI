@@ -20,6 +20,7 @@ import { ActivePlanScreen } from '@/screens/ActivePlanScreen';
 import { ComboRandomizerScreen } from '@/screens/ComboRandomizerScreen';
 import { JournalScreen } from '@/screens/JournalScreen';
 import { CompareScreen } from '@/screens/CompareScreen';
+import { WeightScreen } from '@/screens/WeightScreen';
 import { colors, spacing } from '@/constants/theme';
 import { TabBarIcon } from '@/components/TabBarIcon';
 import type {
@@ -54,6 +55,7 @@ function HomeStackNavigator() {
       <HomeStack.Screen name="ActivePlan" component={ActivePlanScreen} />
       <HomeStack.Screen name="ComboRandomizer" component={ComboRandomizerScreen} />
       <HomeStack.Screen name="Journal" component={JournalScreen} />
+      <HomeStack.Screen name="Weight" component={WeightScreen} />
     </HomeStack.Navigator>
   );
 }
