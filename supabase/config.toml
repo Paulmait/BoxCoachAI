@@ -52,3 +52,6 @@ verify_jwt = true
 
 [functions."detect-boxers"]
 verify_jwt = true
+
+[functions."delete-user-data"]
+verify_jwt = true
