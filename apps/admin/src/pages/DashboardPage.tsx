@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../services/supabase';
-import { useAuth } from '../hooks/useAuth';
 
 interface Stats {
   totalUsers: number;
@@ -12,7 +11,6 @@ interface Stats {
 }
 
 export function DashboardPage() {
-  const { profile, signOut } = useAuth();
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -49,21 +47,6 @@ export function DashboardPage() {
 
   return (
     <div style={styles.container}>
-      <header style={styles.header}>
-        <div>
-          <h1 style={styles.title}>BoxCoach Admin Dashboard</h1>
-          <p style={styles.subtitle}>Welcome, {profile?.display_name || profile?.email}</p>
-        </div>
-        <button onClick={signOut} style={styles.logoutBtn}>Sign Out</button>
-      </header>
-
-      <nav style={styles.nav}>
-        <a href="#dashboard" style={styles.navLink}>Dashboard</a>
-        <a href="#users" style={styles.navLink}>Users</a>
-        <a href="#violations" style={styles.navLink}>Violations</a>
-        <a href="#analytics" style={styles.navLink}>Analytics</a>
-      </nav>
-
       <div style={styles.statsGrid}>
         <StatCard title="Total Users" value={stats?.totalUsers || 0} color="#4CAF50" />
         <StatCard title="New Today" value={stats?.newUsersToday || 0} color="#2196F3" />
@@ -148,14 +131,8 @@ function downloadCSV(content: string, filename: string) {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  container: { minHeight: '100vh', background: '#0a0a0a', padding: '24px' },
+  container: { padding: '24px' },
   loading: { color: '#fff', padding: '48px', textAlign: 'center' },
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' },
-  title: { fontSize: '28px', fontWeight: '700', color: '#fff', margin: 0 },
-  subtitle: { color: '#888', margin: '4px 0 0 0' },
-  logoutBtn: { padding: '8px 16px', borderRadius: '6px', border: 'none', background: '#333', color: '#fff', cursor: 'pointer' },
-  nav: { display: 'flex', gap: '24px', marginBottom: '32px', borderBottom: '1px solid #222', paddingBottom: '16px' },
-  navLink: { color: '#888', textDecoration: 'none', fontWeight: '500' },
   statsGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', marginBottom: '32px' },
   statCard: { background: '#1a1a1a', borderRadius: '8px', padding: '20px' },
   statValue: { fontSize: '32px', fontWeight: '700', color: '#fff', margin: '0 0 4px 0' },
