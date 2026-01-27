@@ -85,12 +85,20 @@ export interface UserProgress {
   stats: UserStats;
 }
 
+export interface SuspensionInfo {
+  isSuspended: boolean;
+  reason?: string;
+  suspendedAt?: string;
+  pausedUntil?: string; // For temporary pauses
+}
+
 export interface User {
   id: string;
   email: string;
   profile: UserProfile;
   preferences: UserPreferences;
   subscription: UserSubscription;
+  suspension?: SuspensionInfo;
 }
 
 export interface AuthState {

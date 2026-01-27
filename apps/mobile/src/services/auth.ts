@@ -1,11 +1,13 @@
 import { supabase } from './supabase';
 import { useAppStore } from '@/store/useAppStore';
-import type { User, UserProfile, UserPreferences, UserSubscription } from '@/types';
+import type { User, UserProfile, UserPreferences, UserSubscription, SuspensionInfo } from '@/types';
 
 interface AuthResult {
   success: boolean;
   error?: string;
   user?: User;
+  suspended?: boolean;
+  suspensionInfo?: SuspensionInfo;
 }
 
 class AuthService {
@@ -44,6 +46,19 @@ class AuthService {
 
       if (data.user) {
         const user = await this.loadUserData(data.user.id, email);
+
+        // Check if user is suspended
+        if (user.suspension?.isSuspended) {
+          // Still set user so we can show suspension screen with details
+          useAppStore.getState().setUser(user);
+          return {
+            success: true,
+            user,
+            suspended: true,
+            suspensionInfo: user.suspension,
+          };
+        }
+
         useAppStore.getState().setUser(user);
         return { success: true, user };
       }
@@ -102,6 +117,18 @@ class AuthService {
 
       if (data.user && data.session) {
         const user = await this.loadUserData(data.user.id, data.user.email || '');
+
+        // Check if user is suspended
+        if (user.suspension?.isSuspended) {
+          useAppStore.getState().setUser(user);
+          return {
+            success: true,
+            user,
+            suspended: true,
+            suspensionInfo: user.suspension,
+          };
+        }
+
         useAppStore.getState().setUser(user);
         return { success: true, user };
       }
@@ -136,7 +163,7 @@ class AuthService {
   }
 
   private async loadUserData(userId: string, email: string): Promise<User> {
-    // Load profile
+    // Load profile including suspension info
     const { data: profileData } = await supabase
       .from('profiles')
       .select('*')
@@ -177,12 +204,49 @@ class AuthService {
       willRenew: false,
     };
 
+    // Build suspension info if user is suspended
+    let suspension: SuspensionInfo | undefined;
+    if (profileData?.is_suspended) {
+      suspension = {
+        isSuspended: true,
+        reason: profileData.suspension_reason || 'Your account has been suspended.',
+        suspendedAt: profileData.suspended_at,
+      };
+
+      // Check if this is a temporary pause (reason contains "hours")
+      if (profileData.suspension_reason?.includes('hours')) {
+        const match = profileData.suspension_reason.match(/(\d+)\s*hours/);
+        if (match && profileData.suspended_at) {
+          const hours = parseInt(match[1], 10);
+          const suspendedAt = new Date(profileData.suspended_at);
+          const pausedUntil = new Date(suspendedAt.getTime() + hours * 60 * 60 * 1000);
+
+          // Check if pause has expired
+          if (new Date() >= pausedUntil) {
+            // Auto-unsuspend - pause has expired
+            await supabase
+              .from('profiles')
+              .update({
+                is_suspended: false,
+                suspension_reason: null,
+                suspended_at: null,
+              })
+              .eq('id', userId);
+            suspension = undefined;
+          } else {
+            suspension.pausedUntil = pausedUntil.toISOString();
+          }
+        }
+      }
+    }
+
     return {
       id: userId,
       email,
       profile,
       preferences,
       subscription,
+      suspension,
     };
   }
 
