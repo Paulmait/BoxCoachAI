@@ -1,7 +1,4 @@
-import Purchases, {
-  CustomerInfo,
-  PurchasesError,
-} from 'react-native-purchases';
+import Purchases, { CustomerInfo, PurchasesError } from 'react-native-purchases';
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import { useAppStore } from '@/store/useAppStore';

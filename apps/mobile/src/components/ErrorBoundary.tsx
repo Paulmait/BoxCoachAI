@@ -71,9 +71,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 <Text style={styles.errorTitle}>Error Details (Dev Only):</Text>
                 <Text style={styles.errorText}>{this.state.error.toString()}</Text>
                 {this.state.errorInfo?.componentStack && (
-                  <Text style={styles.errorStack}>
-                    {this.state.errorInfo.componentStack}
-                  </Text>
+                  <Text style={styles.errorStack}>{this.state.errorInfo.componentStack}</Text>
                 )}
               </ScrollView>
             )}

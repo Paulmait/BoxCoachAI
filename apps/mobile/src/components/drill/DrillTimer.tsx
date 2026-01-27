@@ -13,12 +13,7 @@ interface DrillTimerProps {
   onSkip?: () => void;
 }
 
-export function DrillTimer({
-  duration,
-  autoStart = false,
-  onComplete,
-  onSkip,
-}: DrillTimerProps) {
+export function DrillTimer({ duration, autoStart = false, onComplete, onSkip }: DrillTimerProps) {
   const [timeRemaining, setTimeRemaining] = useState(duration);
   const [isRunning, setIsRunning] = useState(autoStart);
 
@@ -88,8 +83,8 @@ export function DrillTimer({
                 backgroundColor: isWarning
                   ? colors.warning
                   : isComplete
-                  ? colors.success
-                  : colors.primary,
+                    ? colors.success
+                    : colors.primary,
               },
             ]}
           />
@@ -109,11 +104,7 @@ export function DrillTimer({
         {!isComplete && (
           <>
             <Pressable style={styles.controlButton} onPress={handleToggle}>
-              <Ionicons
-                name={isRunning ? 'pause' : 'play'}
-                size={20}
-                color={colors.textPrimary}
-              />
+              <Ionicons name={isRunning ? 'pause' : 'play'} size={20} color={colors.textPrimary} />
             </Pressable>
             <Pressable style={styles.controlButton} onPress={handleReset}>
               <Ionicons name="refresh" size={20} color={colors.textPrimary} />

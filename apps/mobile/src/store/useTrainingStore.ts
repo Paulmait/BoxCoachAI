@@ -2,12 +2,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import type {
-  ActivePlan,
-  CompletedDay,
-  PlanProgress,
-  TodayTraining,
-} from '@/types/trainingPlan';
+import type { ActivePlan, CompletedDay, PlanProgress, TodayTraining } from '@/types/trainingPlan';
 import { TRAINING_PLANS } from '@/data/trainingPlans';
 
 interface TrainingStore {
@@ -189,9 +184,7 @@ export const useTrainingStore = create<TrainingStore>()(
         if (!currentDay) return null;
 
         const today = new Date().toISOString().split('T')[0];
-        const isCompleted = state.activePlan.completedDays.some(
-          (d) => d.date === today
-        );
+        const isCompleted = state.activePlan.completedDays.some((d) => d.date === today);
 
         return {
           planId: plan.id,

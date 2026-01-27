@@ -1,12 +1,6 @@
 // Combo Randomizer Screen
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  Animated,
-} from 'react-native';
+import { View, Text, StyleSheet, Pressable, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -90,15 +84,18 @@ export function ComboRandomizerScreen() {
   }, []);
 
   // Change difficulty
-  const handleDifficultyChange = useCallback((preset: DifficultyPreset) => {
-    hapticLight();
-    setDifficulty(preset);
-    setConfig(COMBO_PRESETS[preset]);
-    if (isRunning) {
-      stopContinuous();
-    }
-    setCurrentCombo(null);
-  }, [isRunning, stopContinuous]);
+  const handleDifficultyChange = useCallback(
+    (preset: DifficultyPreset) => {
+      hapticLight();
+      setDifficulty(preset);
+      setConfig(COMBO_PRESETS[preset]);
+      if (isRunning) {
+        stopContinuous();
+      }
+      setCurrentCombo(null);
+    },
+    [isRunning, stopContinuous]
+  );
 
   // Manual trigger
   const handleManualCombo = useCallback(() => {
@@ -121,49 +118,34 @@ export function ComboRandomizerScreen() {
       <View style={styles.content}>
         {/* Difficulty Selector */}
         <View style={styles.difficultyRow}>
-          {(['beginner', 'intermediate', 'advanced'] as DifficultyPreset[]).map(
-            (preset) => (
-              <Pressable
-                key={preset}
+          {(['beginner', 'intermediate', 'advanced'] as DifficultyPreset[]).map((preset) => (
+            <Pressable
+              key={preset}
+              style={[
+                styles.difficultyButton,
+                difficulty === preset && styles.difficultyButtonActive,
+              ]}
+              onPress={() => handleDifficultyChange(preset)}
+            >
+              <Text
                 style={[
-                  styles.difficultyButton,
-                  difficulty === preset && styles.difficultyButtonActive,
+                  styles.difficultyText,
+                  difficulty === preset && styles.difficultyTextActive,
                 ]}
-                onPress={() => handleDifficultyChange(preset)}
               >
-                <Text
-                  style={[
-                    styles.difficultyText,
-                    difficulty === preset && styles.difficultyTextActive,
-                  ]}
-                >
-                  {preset}
-                </Text>
-              </Pressable>
-            )
-          )}
+                {preset}
+              </Text>
+            </Pressable>
+          ))}
         </View>
 
         {/* Combo Display */}
-        <Pressable
-          style={styles.comboDisplay}
-          onPress={handleManualCombo}
-          disabled={isRunning}
-        >
-          <Animated.View
-            style={[
-              styles.comboContent,
-              { transform: [{ scale: scaleAnim }] },
-            ]}
-          >
+        <Pressable style={styles.comboDisplay} onPress={handleManualCombo} disabled={isRunning}>
+          <Animated.View style={[styles.comboContent, { transform: [{ scale: scaleAnim }] }]}>
             {currentCombo ? (
               <>
-                <Text style={styles.comboNumbers}>
-                  {currentCombo.displayNumbers}
-                </Text>
-                <Text style={styles.comboNames}>
-                  {currentCombo.displayNames}
-                </Text>
+                <Text style={styles.comboNumbers}>{currentCombo.displayNumbers}</Text>
+                <Text style={styles.comboNames}>{currentCombo.displayNames}</Text>
               </>
             ) : (
               <Text style={styles.comboPlaceholder}>
@@ -216,9 +198,7 @@ export function ComboRandomizerScreen() {
           </View>
           <View style={styles.settingItem}>
             <Text style={styles.settingLabel}>Audio</Text>
-            <Pressable
-              onPress={() => setConfig((c) => ({ ...c, audioEnabled: !c.audioEnabled }))}
-            >
+            <Pressable onPress={() => setConfig((c) => ({ ...c, audioEnabled: !c.audioEnabled }))}>
               <Ionicons
                 name={config.audioEnabled ? 'volume-high' : 'volume-mute'}
                 size={24}
@@ -231,18 +211,10 @@ export function ComboRandomizerScreen() {
         {/* Instructions */}
         <View style={styles.instructions}>
           <Text style={styles.instructionTitle}>How to use:</Text>
-          <Text style={styles.instructionText}>
-            1. Choose your difficulty level
-          </Text>
-          <Text style={styles.instructionText}>
-            2. Tap "Start Continuous" for automatic combos
-          </Text>
-          <Text style={styles.instructionText}>
-            3. Or tap the display for manual combos
-          </Text>
-          <Text style={styles.instructionText}>
-            4. Throw the combo when called!
-          </Text>
+          <Text style={styles.instructionText}>1. Choose your difficulty level</Text>
+          <Text style={styles.instructionText}>2. Tap "Start Continuous" for automatic combos</Text>
+          <Text style={styles.instructionText}>3. Or tap the display for manual combos</Text>
+          <Text style={styles.instructionText}>4. Throw the combo when called!</Text>
         </View>
       </View>
     </SafeAreaView>

@@ -73,7 +73,10 @@ export function LoginScreen() {
           await biometricsService.clearSession();
         }
       } else {
-        Alert.alert('Biometrics Setup Required', 'Please sign in first, then enable biometrics in settings');
+        Alert.alert(
+          'Biometrics Setup Required',
+          'Please sign in first, then enable biometrics in settings'
+        );
       }
     }
   };

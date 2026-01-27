@@ -63,7 +63,8 @@ export default {
     signInWith: 'Entrar com {{provider}}',
     orContinueWith: 'Ou continue com',
     checkEmail: 'Verifique seu Email',
-    verificationSent: 'Enviamos um link de verificação. Verifique seu email para completar o cadastro.',
+    verificationSent:
+      'Enviamos um link de verificação. Verifique seu email para completar o cadastro.',
     passwordRequirements: 'Pelo menos 8 caracteres',
     termsAgree: 'Eu aceito os',
     termsOfService: 'Termos de Serviço',
@@ -341,7 +342,8 @@ export default {
     feedback: 'Enviar Feedback',
     rateApp: 'Avaliar App',
     deleteAccount: 'Excluir Conta',
-    deleteAccountConfirm: 'Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.',
+    deleteAccountConfirm:
+      'Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.',
     health: 'Integração de Saúde',
     healthSync: 'Sincronizar com App de Saúde',
     healthPermissions: 'Permissões de Saúde',

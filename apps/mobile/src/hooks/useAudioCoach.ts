@@ -80,11 +80,7 @@ export function useAudioCoach(options: AudioCoachOptions = {}) {
 
   // Start countdown for a timed step
   const startCountdown = useCallback(
-    (
-      durationSeconds: number,
-      onTick?: (remaining: number) => void,
-      onComplete?: () => void
-    ) => {
+    (durationSeconds: number, onTick?: (remaining: number) => void, onComplete?: () => void) => {
       if (countdownRef.current) {
         clearInterval(countdownRef.current);
       }

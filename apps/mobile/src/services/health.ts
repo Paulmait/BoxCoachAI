@@ -9,12 +9,7 @@ import { Platform } from 'react-native';
 
 // Feature flag - set to true when native health integration is implemented
 export const HEALTH_INTEGRATION_ENABLED = false;
-import type {
-  BoxingWorkout,
-  HealthPermissions,
-  HealthSettings,
-  WorkoutType,
-} from '@/types/health';
+import type { BoxingWorkout, HealthPermissions, HealthSettings, WorkoutType } from '@/types/health';
 import { estimateCalories } from '@/utils/calories';
 
 let healthSettings: HealthSettings = {

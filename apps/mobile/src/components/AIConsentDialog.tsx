@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  Pressable,
-  ScrollView,
-  Linking,
-} from 'react-native';
+import { View, Text, StyleSheet, Modal, Pressable, ScrollView, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { APP_CONFIG } from '@/constants/config';
@@ -30,12 +22,7 @@ export function AIConsentDialog({ visible, onAccept, onDecline }: AIConsentDialo
   };
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="fade"
-      onRequestClose={onDecline}
-    >
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={onDecline}>
       <View style={styles.overlay}>
         <View style={styles.dialog}>
           <View style={styles.iconContainer}>
@@ -44,10 +31,7 @@ export function AIConsentDialog({ visible, onAccept, onDecline }: AIConsentDialo
 
           <Text style={styles.title}>AI-Powered Analysis</Text>
 
-          <ScrollView
-            style={styles.contentScroll}
-            showsVerticalScrollIndicator={false}
-          >
+          <ScrollView style={styles.contentScroll} showsVerticalScrollIndicator={false}>
             <Text style={styles.description}>{AI_DISCLOSURE}</Text>
 
             <View style={styles.bulletPoints}>

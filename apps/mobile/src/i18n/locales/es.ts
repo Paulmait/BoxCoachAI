@@ -63,7 +63,8 @@ export default {
     signInWith: 'Iniciar sesión con {{provider}}',
     orContinueWith: 'O continuar con',
     checkEmail: 'Revisa tu Correo',
-    verificationSent: 'Te enviamos un enlace de verificación. Revisa tu correo para completar el registro.',
+    verificationSent:
+      'Te enviamos un enlace de verificación. Revisa tu correo para completar el registro.',
     passwordRequirements: 'Al menos 8 caracteres',
     termsAgree: 'Acepto los',
     termsOfService: 'Términos de Servicio',

@@ -12,11 +12,7 @@ interface AudioCoachToggleProps {
   compact?: boolean;
 }
 
-export function AudioCoachToggle({
-  enabled,
-  onToggle,
-  compact = false,
-}: AudioCoachToggleProps) {
+export function AudioCoachToggle({ enabled, onToggle, compact = false }: AudioCoachToggleProps) {
   const handleToggle = () => {
     hapticLight();
     onToggle(!enabled);
@@ -25,10 +21,7 @@ export function AudioCoachToggle({
   if (compact) {
     return (
       <Pressable
-        style={[
-          styles.compactContainer,
-          enabled && styles.compactContainerActive,
-        ]}
+        style={[styles.compactContainer, enabled && styles.compactContainerActive]}
         onPress={handleToggle}
       >
         <Ionicons
@@ -44,11 +37,7 @@ export function AudioCoachToggle({
     <View style={styles.container}>
       <View style={styles.labelContainer}>
         <View style={styles.iconContainer}>
-          <Ionicons
-            name="mic"
-            size={20}
-            color={enabled ? colors.primary : colors.textTertiary}
-          />
+          <Ionicons name="mic" size={20} color={enabled ? colors.primary : colors.textTertiary} />
         </View>
         <View>
           <Text style={styles.label}>Audio Coaching</Text>

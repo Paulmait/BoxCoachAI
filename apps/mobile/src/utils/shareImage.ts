@@ -88,10 +88,7 @@ export async function captureAndShare(
 /**
  * Save image to temporary directory with a custom name
  */
-export async function saveTempImage(
-  sourceUri: string,
-  filename: string
-): Promise<string | null> {
+export async function saveTempImage(sourceUri: string, filename: string): Promise<string | null> {
   try {
     const tempDir = FileSystem.cacheDirectory;
     if (!tempDir) return null;

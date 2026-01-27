@@ -1,11 +1,7 @@
 import { supabase } from './supabase';
 import { videoProcessingService } from './videoProcessing';
 import { useAppStore } from '@/store/useAppStore';
-import type {
-  AnalysisRequest,
-  AnalysisResponse,
-  TechniqueAnalysis,
-} from '@/types';
+import type { AnalysisRequest, AnalysisResponse, TechniqueAnalysis } from '@/types';
 
 class AnalysisService {
   async analyzeVideo(request: AnalysisRequest): Promise<AnalysisResponse> {
@@ -51,14 +47,14 @@ class AnalysisService {
         console.error('Analysis API error:', error);
         return {
           success: false,
-          error: error.message || 'Analysis service is temporarily unavailable. Please try again.'
+          error: error.message || 'Analysis service is temporarily unavailable. Please try again.',
         };
       }
 
       if (!data || !data.analysis) {
         return {
           success: false,
-          error: 'Unable to analyze video. Please ensure good lighting and try again.'
+          error: 'Unable to analyze video. Please ensure good lighting and try again.',
         };
       }
 
@@ -102,12 +98,10 @@ class AnalysisService {
       const blob = await response.blob();
 
       // Upload to Supabase Storage
-      const { error } = await supabase.storage
-        .from('videos')
-        .upload(path, blob, {
-          contentType: 'video/mp4',
-          upsert: true,
-        });
+      const { error } = await supabase.storage.from('videos').upload(path, blob, {
+        contentType: 'video/mp4',
+        upsert: true,
+      });
 
       if (error) {
         console.error('Upload error:', error);
@@ -145,7 +139,6 @@ class AnalysisService {
       analyzedAt: new Date().toISOString(),
     };
   }
-
 }
 
 export const analysisService = new AnalysisService();

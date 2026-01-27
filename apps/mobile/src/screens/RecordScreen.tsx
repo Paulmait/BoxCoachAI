@@ -1,12 +1,5 @@
 import React, { useState, useRef } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, StyleSheet, Pressable, Alert, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
@@ -165,12 +158,7 @@ export function RecordScreen() {
 
   return (
     <View style={styles.container}>
-      <CameraView
-        ref={cameraRef}
-        style={styles.camera}
-        facing="back"
-        mode="video"
-      >
+      <CameraView ref={cameraRef} style={styles.camera} facing="back" mode="video">
         <SafeAreaView style={styles.cameraOverlay}>
           <View style={styles.header}>
             <Pressable style={styles.closeButton} onPress={() => navigation.goBack()}>

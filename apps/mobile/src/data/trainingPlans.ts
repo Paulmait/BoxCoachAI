@@ -5,7 +5,8 @@ export const TRAINING_PLANS: TrainingPlan[] = [
   {
     id: 'fundamentals_4week',
     name: '4-Week Fundamentals',
-    description: 'Build a solid foundation with proper stance, guard, and basic punches. Perfect for beginners.',
+    description:
+      'Build a solid foundation with proper stance, guard, and basic punches. Perfect for beginners.',
     duration: 4,
     difficulty: 'beginner',
     isPremium: false,
@@ -519,7 +520,8 @@ export const TRAINING_PLANS: TrainingPlan[] = [
   {
     id: 'fight_ready_4week',
     name: 'Fight Ready',
-    description: 'Advanced 4-week program combining all skills. Get ring-ready with comprehensive training.',
+    description:
+      'Advanced 4-week program combining all skills. Get ring-ready with comprehensive training.',
     duration: 4,
     difficulty: 'advanced',
     isPremium: true,

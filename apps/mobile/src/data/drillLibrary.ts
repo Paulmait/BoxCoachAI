@@ -5,7 +5,8 @@ export const drillLibrary: BoxingDrill[] = [
   {
     id: 'stance_check',
     name: 'Stance Check Drill',
-    description: 'Practice maintaining proper boxing stance with correct weight distribution and balance',
+    description:
+      'Practice maintaining proper boxing stance with correct weight distribution and balance',
     category: 'fundamentals',
     difficulty: 'beginner',
     targetTechniques: ['stance'],
@@ -14,7 +15,11 @@ export const drillLibrary: BoxingDrill[] = [
     equipment: ['mirror'],
     steps: [
       { order: 1, instruction: 'Stand in front of a mirror in your fighting stance', duration: 30 },
-      { order: 2, instruction: 'Check that your feet are shoulder-width apart', tips: ['Lead foot points forward', 'Rear foot at 45 degrees'] },
+      {
+        order: 2,
+        instruction: 'Check that your feet are shoulder-width apart',
+        tips: ['Lead foot points forward', 'Rear foot at 45 degrees'],
+      },
       { order: 3, instruction: 'Verify weight is 50/50 on both legs', duration: 30 },
       { order: 4, instruction: 'Bend knees slightly, keep chin down', duration: 30 },
       { order: 5, instruction: 'Hold position for 30 seconds, checking all points' },
@@ -24,11 +29,7 @@ export const drillLibrary: BoxingDrill[] = [
       'Keep your chin tucked behind your lead shoulder',
       'Hands up, elbows tight to body',
     ],
-    commonMistakes: [
-      'Feet too narrow or too wide',
-      'Weight too far forward',
-      'Locked knees',
-    ],
+    commonMistakes: ['Feet too narrow or too wide', 'Weight too far forward', 'Locked knees'],
   },
   {
     id: 'guard_position',
@@ -41,7 +42,11 @@ export const drillLibrary: BoxingDrill[] = [
     duration: 5,
     equipment: ['mirror'],
     steps: [
-      { order: 1, instruction: 'Raise both hands to chin level', tips: ['Fists should be about 4 inches from face'] },
+      {
+        order: 1,
+        instruction: 'Raise both hands to chin level',
+        tips: ['Fists should be about 4 inches from face'],
+      },
       { order: 2, instruction: 'Tuck elbows tight against your body', duration: 20 },
       { order: 3, instruction: 'Touch your chin to your lead shoulder', duration: 20 },
       { order: 4, instruction: 'Hold guard position while breathing deeply', duration: 60 },
@@ -52,11 +57,7 @@ export const drillLibrary: BoxingDrill[] = [
       'Keep wrists straight, not bent',
       'Relax your shoulders - tension wastes energy',
     ],
-    commonMistakes: [
-      'Elbows flared out',
-      'Hands too low',
-      'Chin raised and exposed',
-    ],
+    commonMistakes: ['Elbows flared out', 'Hands too low', 'Chin raised and exposed'],
   },
   // Offense
   {
@@ -71,7 +72,11 @@ export const drillLibrary: BoxingDrill[] = [
     equipment: ['none'],
     steps: [
       { order: 1, instruction: 'Start in proper stance with guard up' },
-      { order: 2, instruction: 'Extend your lead hand straight out', tips: ['Turn fist at end of extension'] },
+      {
+        order: 2,
+        instruction: 'Extend your lead hand straight out',
+        tips: ['Turn fist at end of extension'],
+      },
       { order: 3, instruction: 'Snap it back to guard position immediately' },
       { order: 4, instruction: 'Practice 20 slow jabs focusing on form', reps: 20 },
       { order: 5, instruction: 'Increase speed gradually for 30 more', reps: 30 },
@@ -104,7 +109,11 @@ export const drillLibrary: BoxingDrill[] = [
       { order: 2, instruction: 'Pivot on rear foot, driving from the ground' },
       { order: 3, instruction: 'Rotate hips fully toward target' },
       { order: 4, instruction: 'Extend rear hand straight, turning fist' },
-      { order: 5, instruction: 'Return immediately to guard', tips: ['Snap back, dont let it float'] },
+      {
+        order: 5,
+        instruction: 'Return immediately to guard',
+        tips: ['Snap back, dont let it float'],
+      },
       { order: 6, instruction: 'Practice 10 crosses, focusing on hip rotation', reps: 10 },
     ],
     tips: [
@@ -112,11 +121,7 @@ export const drillLibrary: BoxingDrill[] = [
       'Your rear heel should come off the ground',
       'Keep lead hand up protecting your chin',
     ],
-    commonMistakes: [
-      'Punching with arm only',
-      'Dropping lead hand',
-      'Leaning too far forward',
-    ],
+    commonMistakes: ['Punching with arm only', 'Dropping lead hand', 'Leaning too far forward'],
     regressionDrills: ['jab_drill'],
     progressionDrills: ['jab_cross'],
   },
@@ -192,7 +197,11 @@ export const drillLibrary: BoxingDrill[] = [
     steps: [
       { order: 1, instruction: 'Stand in stance facing the slip bag' },
       { order: 2, instruction: 'Let the bag swing toward your face' },
-      { order: 3, instruction: 'Bend at the knees and waist to slip left', tips: ['Keep eyes on the bag'] },
+      {
+        order: 3,
+        instruction: 'Bend at the knees and waist to slip left',
+        tips: ['Keep eyes on the bag'],
+      },
       { order: 4, instruction: 'Return to center and slip right' },
       { order: 5, instruction: 'Practice alternating slips for 3 minutes', duration: 180 },
     ],
@@ -248,7 +257,11 @@ export const drillLibrary: BoxingDrill[] = [
     equipment: ['mitts'],
     steps: [
       { order: 1, instruction: 'Partner throws slow jabs at your face' },
-      { order: 2, instruction: 'Use lead hand to tap the punch to the side', tips: ['Small movement, dont swat'] },
+      {
+        order: 2,
+        instruction: 'Use lead hand to tap the punch to the side',
+        tips: ['Small movement, dont swat'],
+      },
       { order: 3, instruction: 'Immediately counter with your own jab' },
       { order: 4, instruction: 'Practice timing for 2 minutes each side', duration: 120 },
     ],
@@ -342,11 +355,7 @@ export const drillLibrary: BoxingDrill[] = [
       'Stay in punching range',
       'Hands stay up during movement',
     ],
-    commonMistakes: [
-      'Steps too big',
-      'Moving out of range',
-      'Crossing feet',
-    ],
+    commonMistakes: ['Steps too big', 'Moving out of range', 'Crossing feet'],
   },
   // Conditioning
   {
@@ -371,11 +380,7 @@ export const drillLibrary: BoxingDrill[] = [
       'Stay on balls of feet',
       'Keep elbows close to body, turn rope with wrists',
     ],
-    commonMistakes: [
-      'Jumping too high',
-      'Using arms to turn rope',
-      'Looking down at feet',
-    ],
+    commonMistakes: ['Jumping too high', 'Using arms to turn rope', 'Looking down at feet'],
   },
   {
     id: 'shadow_boxing',
@@ -384,7 +389,12 @@ export const drillLibrary: BoxingDrill[] = [
     category: 'conditioning',
     difficulty: 'beginner',
     targetTechniques: ['stance', 'guard', 'jab', 'cross', 'hook', 'footwork'],
-    addressesRootCauses: ['weight_distribution', 'hip_rotation', 'footwork_timing', 'recovery_position'],
+    addressesRootCauses: [
+      'weight_distribution',
+      'hip_rotation',
+      'footwork_timing',
+      'recovery_position',
+    ],
     duration: 12,
     equipment: ['none'],
     steps: [
@@ -457,11 +467,7 @@ export const drillLibrary: BoxingDrill[] = [
       'Can vary levels - head/body or body/head',
       'Great for measuring distance',
     ],
-    commonMistakes: [
-      'Second jab too slow',
-      'Dropping rear hand',
-      'Not varying levels',
-    ],
+    commonMistakes: ['Second jab too slow', 'Dropping rear hand', 'Not varying levels'],
   },
   {
     id: 'three_punch_combo',
@@ -503,13 +509,9 @@ export function getDrillsByCategory(category: string): BoxingDrill[] {
 }
 
 export function getDrillsForRootCause(rootCause: string): BoxingDrill[] {
-  return drillLibrary.filter((drill) =>
-    drill.addressesRootCauses.includes(rootCause as any)
-  );
+  return drillLibrary.filter((drill) => drill.addressesRootCauses.includes(rootCause as any));
 }
 
 export function getDrillsForTechnique(technique: string): BoxingDrill[] {
-  return drillLibrary.filter((drill) =>
-    drill.targetTechniques.includes(technique as any)
-  );
+  return drillLibrary.filter((drill) => drill.targetTechniques.includes(technique as any));
 }

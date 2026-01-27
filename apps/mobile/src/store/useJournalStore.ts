@@ -57,9 +57,7 @@ export const useJournalStore = create<JournalStore>()(
       updateEntry: (id, updates) => {
         set((state) => ({
           entries: state.entries.map((entry) =>
-            entry.id === id
-              ? { ...entry, ...updates, updatedAt: new Date().toISOString() }
-              : entry
+            entry.id === id ? { ...entry, ...updates, updatedAt: new Date().toISOString() } : entry
           ),
         }));
       },

@@ -63,7 +63,8 @@ export default {
     signInWith: 'Mit {{provider}} anmelden',
     orContinueWith: 'Oder fortfahren mit',
     checkEmail: 'E-Mail überprüfen',
-    verificationSent: 'Wir haben Ihnen einen Bestätigungslink gesendet. Überprüfen Sie Ihre E-Mail, um die Registrierung abzuschließen.',
+    verificationSent:
+      'Wir haben Ihnen einen Bestätigungslink gesendet. Überprüfen Sie Ihre E-Mail, um die Registrierung abzuschließen.',
     passwordRequirements: 'Mindestens 8 Zeichen',
     termsAgree: 'Ich stimme zu',
     termsOfService: 'Nutzungsbedingungen',
@@ -341,7 +342,8 @@ export default {
     feedback: 'Feedback senden',
     rateApp: 'App bewerten',
     deleteAccount: 'Konto löschen',
-    deleteAccountConfirm: 'Möchten Sie Ihr Konto wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.',
+    deleteAccountConfirm:
+      'Möchten Sie Ihr Konto wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.',
     health: 'Gesundheitsintegration',
     healthSync: 'Mit Gesundheits-App synchronisieren',
     healthPermissions: 'Gesundheitsberechtigungen',
@@ -415,6 +417,6 @@ export default {
     slide4Title: 'Trainieren wie ein Profi',
     slide4Desc: 'Folgen Sie strukturierten Übungen und Trainingsplänen',
     getStarted: 'Loslegen',
-    letsGo: 'Los geht\'s!',
+    letsGo: "Los geht's!",
   },
 };

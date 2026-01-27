@@ -1,11 +1,6 @@
 // XP Gain Toast Component
 import React, { useEffect, useRef } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-} from 'react-native';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { colors, spacing, fontSize, borderRadius, shadows } from '@/constants/theme';

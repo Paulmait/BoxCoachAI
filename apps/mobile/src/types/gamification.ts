@@ -11,12 +11,7 @@ export interface Achievement {
   unlockedAt?: string; // ISO date
 }
 
-export type AchievementCategory =
-  | 'analysis'
-  | 'drills'
-  | 'streaks'
-  | 'scores'
-  | 'milestones';
+export type AchievementCategory = 'analysis' | 'drills' | 'streaks' | 'scores' | 'milestones';
 
 export interface AchievementRequirement {
   type: 'count' | 'streak' | 'score' | 'level';

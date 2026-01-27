@@ -30,12 +30,7 @@ export function StreakDisplay({
           size={16}
           color={currentStreak > 0 ? colors.accent : colors.textTertiary}
         />
-        <Text
-          style={[
-            styles.compactText,
-            currentStreak > 0 && styles.compactTextActive,
-          ]}
-        >
+        <Text style={[styles.compactText, currentStreak > 0 && styles.compactTextActive]}>
           {currentStreak}
         </Text>
       </Container>
@@ -53,9 +48,7 @@ export function StreakDisplay({
       </View>
       <View style={styles.content}>
         <Text style={styles.streakNumber}>{currentStreak}</Text>
-        <Text style={styles.streakLabel}>
-          day{currentStreak !== 1 ? 's' : ''} streak
-        </Text>
+        <Text style={styles.streakLabel}>day{currentStreak !== 1 ? 's' : ''} streak</Text>
       </View>
       {currentStreak > 0 && hasStreakProtection && (
         <View style={styles.protectionBadge}>

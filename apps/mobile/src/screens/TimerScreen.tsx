@@ -1,12 +1,6 @@
 // Round Timer Screen
 import React, { useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  ScrollView,
-} from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -124,13 +118,9 @@ export function TimerScreen() {
               />
             </Svg>
             <View style={styles.timerContent}>
-              <Text style={[styles.phaseText, { color: phaseColor }]}>
-                {getPhaseText()}
-              </Text>
+              <Text style={[styles.phaseText, { color: phaseColor }]}>{getPhaseText()}</Text>
               <Text style={styles.timeText}>{formattedTime}</Text>
-              <Text style={styles.roundInfo}>
-                {timerState.totalRounds} rounds
-              </Text>
+              <Text style={styles.roundInfo}>{timerState.totalRounds} rounds</Text>
             </View>
           </View>
         </View>

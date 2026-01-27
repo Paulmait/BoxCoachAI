@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -43,9 +37,7 @@ export function HomeScreen() {
   const todayTraining = getTodayTraining();
 
   const latestAnalysis = analysisHistory[0];
-  const activePlanData = activePlan
-    ? TRAINING_PLANS.find((p) => p.id === activePlan.planId)
-    : null;
+  const activePlanData = activePlan ? TRAINING_PLANS.find((p) => p.id === activePlan.planId) : null;
 
   const handleAnalyze = () => {
     hapticLight();
@@ -117,18 +109,11 @@ export function HomeScreen() {
         </View>
 
         {/* Level Progress */}
-        <LevelProgress
-          level={level}
-          xp={xp}
-          onPress={() => navigation.navigate('Achievements')}
-        />
+        <LevelProgress level={level} xp={xp} onPress={() => navigation.navigate('Achievements')} />
 
         {/* Today's Training (if active plan) */}
         {activePlanData && todayTraining && (
-          <Pressable
-            style={styles.todayCard}
-            onPress={() => navigation.navigate('ActivePlan')}
-          >
+          <Pressable style={styles.todayCard} onPress={() => navigation.navigate('ActivePlan')}>
             <View style={styles.todayHeader}>
               <View style={styles.todayLabel}>
                 <Ionicons name="calendar" size={16} color={colors.primary} />
@@ -145,7 +130,8 @@ export function HomeScreen() {
               </View>
             ) : (
               <Text style={styles.todayDrills}>
-                {todayTraining.drillIds.length} drill{todayTraining.drillIds.length !== 1 ? 's' : ''} to complete
+                {todayTraining.drillIds.length} drill
+                {todayTraining.drillIds.length !== 1 ? 's' : ''} to complete
               </Text>
             )}
           </Pressable>
@@ -174,7 +160,9 @@ export function HomeScreen() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Latest Analysis</Text>
-              <Pressable onPress={() => navigation.navigate('Results', { analysisId: latestAnalysis.id })}>
+              <Pressable
+                onPress={() => navigation.navigate('Results', { analysisId: latestAnalysis.id })}
+              >
                 <Text style={styles.sectionLink}>View Details</Text>
               </Pressable>
             </View>
@@ -216,55 +204,37 @@ export function HomeScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
           <View style={styles.quickActionsGrid}>
-            <Pressable
-              style={styles.quickAction}
-              onPress={() => handleQuickAction('timer')}
-            >
+            <Pressable style={styles.quickAction} onPress={() => handleQuickAction('timer')}>
               <View style={[styles.quickActionIcon, { backgroundColor: colors.primary + '20' }]}>
                 <Ionicons name="timer" size={24} color={colors.primary} />
               </View>
               <Text style={styles.quickActionText}>Timer</Text>
             </Pressable>
-            <Pressable
-              style={styles.quickAction}
-              onPress={() => handleQuickAction('drills')}
-            >
+            <Pressable style={styles.quickAction} onPress={() => handleQuickAction('drills')}>
               <View style={[styles.quickActionIcon, { backgroundColor: colors.success + '20' }]}>
                 <Ionicons name="fitness" size={24} color={colors.success} />
               </View>
               <Text style={styles.quickActionText}>Drills</Text>
             </Pressable>
-            <Pressable
-              style={styles.quickAction}
-              onPress={() => handleQuickAction('combos')}
-            >
+            <Pressable style={styles.quickAction} onPress={() => handleQuickAction('combos')}>
               <View style={[styles.quickActionIcon, { backgroundColor: colors.warning + '20' }]}>
                 <Ionicons name="flash" size={24} color={colors.warning} />
               </View>
               <Text style={styles.quickActionText}>Combos</Text>
             </Pressable>
-            <Pressable
-              style={styles.quickAction}
-              onPress={() => handleQuickAction('plans')}
-            >
+            <Pressable style={styles.quickAction} onPress={() => handleQuickAction('plans')}>
               <View style={[styles.quickActionIcon, { backgroundColor: colors.info + '20' }]}>
                 <Ionicons name="calendar" size={24} color={colors.info} />
               </View>
               <Text style={styles.quickActionText}>Plans</Text>
             </Pressable>
-            <Pressable
-              style={styles.quickAction}
-              onPress={() => handleQuickAction('journal')}
-            >
+            <Pressable style={styles.quickAction} onPress={() => handleQuickAction('journal')}>
               <View style={[styles.quickActionIcon, { backgroundColor: colors.accent + '20' }]}>
                 <Ionicons name="book" size={24} color={colors.accent} />
               </View>
               <Text style={styles.quickActionText}>Journal</Text>
             </Pressable>
-            <Pressable
-              style={styles.quickAction}
-              onPress={() => handleQuickAction('achievements')}
-            >
+            <Pressable style={styles.quickAction} onPress={() => handleQuickAction('achievements')}>
               <View style={[styles.quickActionIcon, { backgroundColor: colors.primary + '20' }]}>
                 <Ionicons name="trophy" size={24} color={colors.primary} />
               </View>

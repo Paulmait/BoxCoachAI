@@ -1,12 +1,6 @@
 // Training Journal Screen
 import React, { useState, useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -38,10 +32,7 @@ export function JournalScreen() {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   const stats = getStats();
-  const calendarDays = getCalendarDays(
-    currentMonth.getFullYear(),
-    currentMonth.getMonth() + 1
-  );
+  const calendarDays = getCalendarDays(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
 
   const handlePrevMonth = useCallback(() => {
     hapticLight();
@@ -66,22 +57,21 @@ export function JournalScreen() {
     setSelectedDate(date);
   }, []);
 
-  const handleAddEntry = useCallback((type: JournalEntryType) => {
-    hapticLight();
-    const today = new Date().toISOString().split('T')[0];
-    addEntry({
-      date: selectedDate || today,
-      type,
-      title: `${ENTRY_TYPES.find((t) => t.type === type)?.label || 'Training'} Session`,
-    });
-  }, [addEntry, selectedDate]);
+  const handleAddEntry = useCallback(
+    (type: JournalEntryType) => {
+      hapticLight();
+      const today = new Date().toISOString().split('T')[0];
+      addEntry({
+        date: selectedDate || today,
+        type,
+        title: `${ENTRY_TYPES.find((t) => t.type === type)?.label || 'Training'} Session`,
+      });
+    },
+    [addEntry, selectedDate]
+  );
 
   // Build calendar grid
-  const firstDayOfMonth = new Date(
-    currentMonth.getFullYear(),
-    currentMonth.getMonth(),
-    1
-  ).getDay();
+  const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
 
   const calendarGrid: (CalendarDay | null)[] = [];
   for (let i = 0; i < firstDayOfMonth; i++) {
@@ -89,9 +79,7 @@ export function JournalScreen() {
   }
   calendarGrid.push(...calendarDays);
 
-  const selectedDayEntries = selectedDate
-    ? entries.filter((e) => e.date === selectedDate)
-    : [];
+  const selectedDayEntries = selectedDate ? entries.filter((e) => e.date === selectedDate) : [];
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -177,9 +165,7 @@ export function JournalScreen() {
                     >
                       {parseInt(day.date.split('-')[2], 10)}
                     </Text>
-                    {day.hasEntry && (
-                      <View style={styles.entryIndicator} />
-                    )}
+                    {day.hasEntry && <View style={styles.entryIndicator} />}
                   </>
                 )}
               </Pressable>
@@ -204,8 +190,7 @@ export function JournalScreen() {
                   <View style={styles.entryIcon}>
                     <Ionicons
                       name={
-                        ENTRY_TYPES.find((t) => t.type === entry.type)?.icon as any ||
-                        'fitness'
+                        (ENTRY_TYPES.find((t) => t.type === entry.type)?.icon as any) || 'fitness'
                       }
                       size={24}
                       color={colors.primary}

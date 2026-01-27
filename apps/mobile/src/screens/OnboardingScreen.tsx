@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  ScrollView,
-} from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -58,10 +52,7 @@ export function OnboardingScreen() {
   const renderDots = () => (
     <View style={styles.dotsContainer}>
       {[...Array(steps.length + 2)].map((_, index) => (
-        <View
-          key={index}
-          style={[styles.dot, index === currentStep && styles.dotActive]}
-        />
+        <View key={index} style={[styles.dot, index === currentStep && styles.dotActive]} />
       ))}
     </View>
   );
@@ -94,12 +85,7 @@ export function OnboardingScreen() {
                 style={[styles.optionButton, stance === 'orthodox' && styles.optionButtonActive]}
                 onPress={() => setStance('orthodox')}
               >
-                <Text
-                  style={[
-                    styles.optionText,
-                    stance === 'orthodox' && styles.optionTextActive,
-                  ]}
-                >
+                <Text style={[styles.optionText, stance === 'orthodox' && styles.optionTextActive]}>
                   Orthodox
                 </Text>
                 <Text style={styles.optionHint}>Left foot forward</Text>
@@ -108,12 +94,7 @@ export function OnboardingScreen() {
                 style={[styles.optionButton, stance === 'southpaw' && styles.optionButtonActive]}
                 onPress={() => setStance('southpaw')}
               >
-                <Text
-                  style={[
-                    styles.optionText,
-                    stance === 'southpaw' && styles.optionTextActive,
-                  ]}
-                >
+                <Text style={[styles.optionText, stance === 'southpaw' && styles.optionTextActive]}>
                   Southpaw
                 </Text>
                 <Text style={styles.optionHint}>Right foot forward</Text>
@@ -125,28 +106,28 @@ export function OnboardingScreen() {
             <Text style={styles.optionLabel}>Experience Level</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.optionRow}>
-                {(['beginner', 'intermediate', 'advanced', 'professional'] as ExperienceLevel[]).map(
-                  (level) => (
-                    <Pressable
-                      key={level}
+                {(
+                  ['beginner', 'intermediate', 'advanced', 'professional'] as ExperienceLevel[]
+                ).map((level) => (
+                  <Pressable
+                    key={level}
+                    style={[
+                      styles.optionButton,
+                      styles.optionButtonSmall,
+                      experienceLevel === level && styles.optionButtonActive,
+                    ]}
+                    onPress={() => setExperienceLevel(level)}
+                  >
+                    <Text
                       style={[
-                        styles.optionButton,
-                        styles.optionButtonSmall,
-                        experienceLevel === level && styles.optionButtonActive,
+                        styles.optionText,
+                        experienceLevel === level && styles.optionTextActive,
                       ]}
-                      onPress={() => setExperienceLevel(level)}
                     >
-                      <Text
-                        style={[
-                          styles.optionText,
-                          experienceLevel === level && styles.optionTextActive,
-                        ]}
-                      >
-                        {level.charAt(0).toUpperCase() + level.slice(1)}
-                      </Text>
-                    </Pressable>
-                  )
-                )}
+                      {level.charAt(0).toUpperCase() + level.slice(1)}
+                    </Text>
+                  </Pressable>
+                ))}
               </View>
             </ScrollView>
           </View>
@@ -185,12 +166,8 @@ export function OnboardingScreen() {
           style={[styles.nextButton, currentStep === 0 && styles.nextButtonFull]}
           onPress={isLastStep ? handleComplete : handleNext}
         >
-          <Text style={styles.nextButtonText}>
-            {isLastStep ? 'Get Started' : 'Continue'}
-          </Text>
-          {!isLastStep && (
-            <Ionicons name="arrow-forward" size={20} color={colors.textPrimary} />
-          )}
+          <Text style={styles.nextButtonText}>{isLastStep ? 'Get Started' : 'Continue'}</Text>
+          {!isLastStep && <Ionicons name="arrow-forward" size={20} color={colors.textPrimary} />}
         </Pressable>
       </View>
     </SafeAreaView>

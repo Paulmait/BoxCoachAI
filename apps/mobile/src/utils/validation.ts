@@ -54,7 +54,10 @@ export function validatePassword(password: string): {
 export function getAuthErrorMessage(error: string): string {
   const errorLower = error.toLowerCase();
 
-  if (errorLower.includes('invalid login credentials') || errorLower.includes('invalid email or password')) {
+  if (
+    errorLower.includes('invalid login credentials') ||
+    errorLower.includes('invalid email or password')
+  ) {
     return 'Invalid email or password. Please try again.';
   }
 

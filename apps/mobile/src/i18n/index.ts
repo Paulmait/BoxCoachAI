@@ -43,7 +43,7 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'de', name: 'German', nativeName: 'Deutsch' },
 ] as const;
 
-export type LanguageCode = typeof SUPPORTED_LANGUAGES[number]['code'];
+export type LanguageCode = (typeof SUPPORTED_LANGUAGES)[number]['code'];
 
 /**
  * Initialize i18n with saved preference or device locale
@@ -94,14 +94,14 @@ export function getCurrentLanguage(): string {
  * Check if a language code is supported
  */
 export function isValidLanguage(code: string): boolean {
-  return SUPPORTED_LANGUAGES.some(lang => lang.code === code);
+  return SUPPORTED_LANGUAGES.some((lang) => lang.code === code);
 }
 
 /**
  * Get language info by code
  */
 export function getLanguageInfo(code: string) {
-  return SUPPORTED_LANGUAGES.find(lang => lang.code === code);
+  return SUPPORTED_LANGUAGES.find((lang) => lang.code === code);
 }
 
 /**

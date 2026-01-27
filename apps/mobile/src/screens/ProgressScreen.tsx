@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -26,8 +20,7 @@ export function ProgressScreen() {
 
   const latestScore = analysisHistory[0]?.overallScore || 0;
   const firstScore = analysisHistory[analysisHistory.length - 1]?.overallScore || 0;
-  const improvement =
-    analysisHistory.length > 1 ? latestScore - firstScore : 0;
+  const improvement = analysisHistory.length > 1 ? latestScore - firstScore : 0;
 
   const recentScores = analysisHistory.slice(0, 10).reverse();
 
@@ -118,16 +111,9 @@ export function ProgressScreen() {
             <Text style={styles.sectionTitle}>Latest Technique Scores</Text>
             {analysisHistory[0]?.techniqueScores.map((technique, index) => (
               <View key={index} style={styles.techniqueRow}>
-                <Text style={styles.techniqueName}>
-                  {technique.category.replace('_', ' ')}
-                </Text>
+                <Text style={styles.techniqueName}>{technique.category.replace('_', ' ')}</Text>
                 <View style={styles.techniqueBarContainer}>
-                  <View
-                    style={[
-                      styles.techniqueBar,
-                      { width: `${technique.score}%` },
-                    ]}
-                  />
+                  <View style={[styles.techniqueBar, { width: `${technique.score}%` }]} />
                 </View>
                 <Text style={styles.techniqueScore}>{technique.score}</Text>
               </View>

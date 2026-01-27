@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  Animated,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Animated, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -150,21 +143,14 @@ export function AnalyzingScreen() {
                   index < currentStepIndex && styles.stepDotComplete,
                 ]}
               />
-              <Text
-                style={[
-                  styles.stepText,
-                  index <= currentStepIndex && styles.stepTextActive,
-                ]}
-              >
+              <Text style={[styles.stepText, index <= currentStepIndex && styles.stepTextActive]}>
                 {step.label.replace('...', '')}
               </Text>
             </View>
           ))}
         </View>
 
-        <Text style={styles.hint}>
-          This usually takes about 15-30 seconds
-        </Text>
+        <Text style={styles.hint}>This usually takes about 15-30 seconds</Text>
       </View>
     </SafeAreaView>
   );

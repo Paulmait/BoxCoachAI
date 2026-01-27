@@ -2,12 +2,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import type {
-  TimerState,
-  TimerSettings,
-  TimerPreset,
-  TimerPhase,
-} from '@/types/timer';
+import type { TimerState, TimerSettings, TimerPreset, TimerPhase } from '@/types/timer';
 import { DEFAULT_TIMER_SETTINGS, TIMER_PRESETS } from '@/types/timer';
 
 interface TimerStore {
@@ -130,7 +125,11 @@ export const useTimerStore = create<TimerStore>()(
         const state = get();
         const { timerState, settings } = state;
 
-        if (!timerState.isRunning || timerState.phase === 'idle' || timerState.phase === 'complete') {
+        if (
+          !timerState.isRunning ||
+          timerState.phase === 'idle' ||
+          timerState.phase === 'complete'
+        ) {
           return;
         }
 
@@ -174,10 +173,7 @@ export const useTimerStore = create<TimerStore>()(
         } else {
           // Check for warning phase
           let newPhase = timerState.phase;
-          if (
-            timerState.phase === 'round' &&
-            newTimeRemaining <= settings.warningTime
-          ) {
+          if (timerState.phase === 'round' && newTimeRemaining <= settings.warningTime) {
             newPhase = 'warning';
           }
 
@@ -245,8 +241,6 @@ export const useTimerStore = create<TimerStore>()(
 export const selectTimerState = (state: TimerStore) => state.timerState;
 export const selectTimerSettings = (state: TimerStore) => state.settings;
 export const selectSelectedPreset = (state: TimerStore) =>
-  state.selectedPresetId
-    ? TIMER_PRESETS.find((p) => p.id === state.selectedPresetId)
-    : null;
+  state.selectedPresetId ? TIMER_PRESETS.find((p) => p.id === state.selectedPresetId) : null;
 export const selectIsTimerRunning = (state: TimerStore) => state.timerState.isRunning;
 export const selectTimerPhase = (state: TimerStore) => state.timerState.phase;

@@ -11,60 +11,58 @@ interface ShareCardProps {
   analysis: TechniqueAnalysis;
 }
 
-export const ShareCard = forwardRef<View, ShareCardProps>(
-  ({ analysis }, ref) => {
-    const topImprovements = analysis.priorityImprovements.slice(0, 3);
+export const ShareCard = forwardRef<View, ShareCardProps>(({ analysis }, ref) => {
+  const topImprovements = analysis.priorityImprovements.slice(0, 3);
 
-    return (
-      <View ref={ref} style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.logoContainer}>
-            <Ionicons name="fitness" size={24} color={colors.primary} />
-            <Text style={styles.logoText}>Boxing Coach AI</Text>
+  return (
+    <View ref={ref} style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.logoContainer}>
+          <Ionicons name="fitness" size={24} color={colors.primary} />
+          <Text style={styles.logoText}>Boxing Coach AI</Text>
+        </View>
+      </View>
+
+      {/* Score */}
+      <View style={styles.scoreSection}>
+        <ScoreRing score={analysis.overallScore} size={140} />
+        <Text style={styles.scoreLabel}>Overall Score</Text>
+      </View>
+
+      {/* Technique Scores */}
+      <View style={styles.scoresGrid}>
+        {analysis.techniqueScores.slice(0, 4).map((score) => (
+          <View key={score.category} style={styles.scoreItem}>
+            <Text style={styles.scoreName}>{score.category}</Text>
+            <Text style={styles.scoreValue}>{score.score}</Text>
           </View>
-        </View>
+        ))}
+      </View>
 
-        {/* Score */}
-        <View style={styles.scoreSection}>
-          <ScoreRing score={analysis.overallScore} size={140} />
-          <Text style={styles.scoreLabel}>Overall Score</Text>
-        </View>
-
-        {/* Technique Scores */}
-        <View style={styles.scoresGrid}>
-          {analysis.techniqueScores.slice(0, 4).map((score) => (
-            <View key={score.category} style={styles.scoreItem}>
-              <Text style={styles.scoreName}>{score.category}</Text>
-              <Text style={styles.scoreValue}>{score.score}</Text>
+      {/* Areas to Improve */}
+      {topImprovements.length > 0 && (
+        <View style={styles.improvementsSection}>
+          <Text style={styles.improvementsTitle}>Focus Areas</Text>
+          {topImprovements.map((improvement, index) => (
+            <View key={index} style={styles.improvementItem}>
+              <Ionicons name="arrow-forward" size={14} color={colors.primary} />
+              <Text style={styles.improvementText}>{improvement}</Text>
             </View>
           ))}
         </View>
+      )}
 
-        {/* Areas to Improve */}
-        {topImprovements.length > 0 && (
-          <View style={styles.improvementsSection}>
-            <Text style={styles.improvementsTitle}>Focus Areas</Text>
-            {topImprovements.map((improvement, index) => (
-              <View key={index} style={styles.improvementItem}>
-                <Ionicons name="arrow-forward" size={14} color={colors.primary} />
-                <Text style={styles.improvementText}>{improvement}</Text>
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Footer */}
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            Analyzed on {new Date(analysis.analyzedAt).toLocaleDateString()}
-          </Text>
-          <Text style={styles.watermark}>boxcoach.ai</Text>
-        </View>
+      {/* Footer */}
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>
+          Analyzed on {new Date(analysis.analyzedAt).toLocaleDateString()}
+        </Text>
+        <Text style={styles.watermark}>boxcoach.ai</Text>
       </View>
-    );
-  }
-);
+    </View>
+  );
+});
 
 ShareCard.displayName = 'ShareCard';
 

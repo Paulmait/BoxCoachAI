@@ -14,7 +14,7 @@ export function generateCombo(config: ComboConfig): Combo {
   let availablePunches = [...PUNCHES];
   if (!includePowerPunches) {
     // Only include jab (1), cross (2), and lead hook (3)
-    availablePunches = availablePunches.filter(p => p.number <= 3);
+    availablePunches = availablePunches.filter((p) => p.number <= 3);
   }
 
   const selectedPunches: Punch[] = [];
@@ -24,14 +24,14 @@ export function generateCombo(config: ComboConfig): Combo {
     // Smart selection - avoid repeating same punch (except jab)
     let candidates = availablePunches;
     if (lastPunchNumber && lastPunchNumber !== 1) {
-      candidates = availablePunches.filter(p => p.number !== lastPunchNumber);
+      candidates = availablePunches.filter((p) => p.number !== lastPunchNumber);
     }
 
     // For better combos, prefer certain sequences
     if (i === 0) {
       // Start with jab or double jab setup most of the time
       if (Math.random() < 0.7) {
-        candidates = availablePunches.filter(p => p.number === 1 || p.number === 2);
+        candidates = availablePunches.filter((p) => p.number === 1 || p.number === 2);
       }
     }
 
@@ -42,8 +42,8 @@ export function generateCombo(config: ComboConfig): Combo {
 
   return {
     punches: selectedPunches,
-    displayNumbers: selectedPunches.map(p => p.number).join('-'),
-    displayNames: selectedPunches.map(p => p.shortName).join('-'),
+    displayNumbers: selectedPunches.map((p) => p.number).join('-'),
+    displayNames: selectedPunches.map((p) => p.shortName).join('-'),
   };
 }
 
@@ -51,14 +51,14 @@ export function generateCombo(config: ComboConfig): Combo {
  * Generate a spoken callout for a combo
  */
 export function getComboCallout(combo: Combo): string {
-  return combo.punches.map(p => p.name).join('! ') + '!';
+  return combo.punches.map((p) => p.name).join('! ') + '!';
 }
 
 /**
  * Get the number callout (e.g., "1-2-3")
  */
 export function getNumberCallout(combo: Combo): string {
-  return combo.punches.map(p => p.number).join(', ');
+  return combo.punches.map((p) => p.number).join(', ');
 }
 
 /**

@@ -44,12 +44,7 @@ export function DrillRecommendationCard({
               { backgroundColor: getDifficultyColor(drill.difficulty) + '20' },
             ]}
           >
-            <Text
-              style={[
-                styles.difficultyText,
-                { color: getDifficultyColor(drill.difficulty) },
-              ]}
-            >
+            <Text style={[styles.difficultyText, { color: getDifficultyColor(drill.difficulty) }]}>
               {drill.difficulty}
             </Text>
           </View>

@@ -37,7 +37,7 @@ export function SettingsScreen() {
   const [showLanguageModal, setShowLanguageModal] = useState(false);
   const { t, locale, setLocale, languages } = useTranslation();
 
-  const currentLanguage = languages.find(l => l.code === locale) || languages[0];
+  const currentLanguage = languages.find((l) => l.code === locale) || languages[0];
 
   const handleBiometricsToggle = async (enabled: boolean) => {
     if (enabled) {
@@ -80,50 +80,46 @@ export function SettingsScreen() {
   };
 
   const handleDeleteData = () => {
-    Alert.alert(
-      DELETE_DATA_CONFIRMATION.title,
-      DELETE_DATA_CONFIRMATION.message,
-      [
-        { text: DELETE_DATA_CONFIRMATION.cancelButton, style: 'cancel' },
-        {
-          text: DELETE_DATA_CONFIRMATION.confirmButton,
-          style: 'destructive',
-          onPress: async () => {
-            setIsDeletingData(true);
-            try {
-              // Call the delete-user-data edge function
-              const { data, error } = await supabase.functions.invoke('delete-user-data', {
-                body: { confirmDelete: true },
-              });
+    Alert.alert(DELETE_DATA_CONFIRMATION.title, DELETE_DATA_CONFIRMATION.message, [
+      { text: DELETE_DATA_CONFIRMATION.cancelButton, style: 'cancel' },
+      {
+        text: DELETE_DATA_CONFIRMATION.confirmButton,
+        style: 'destructive',
+        onPress: async () => {
+          setIsDeletingData(true);
+          try {
+            // Call the delete-user-data edge function
+            const { data, error } = await supabase.functions.invoke('delete-user-data', {
+              body: { confirmDelete: true },
+            });
 
-              if (error) {
-                throw new Error(error.message);
-              }
-
-              if (data?.success) {
-                // Clear local session and biometric data
-                await biometricsService.clearSession();
-                await authService.signOut();
-                Alert.alert(
-                  'Data Deleted',
-                  'Your account and all associated data have been permanently deleted.'
-                );
-              } else {
-                throw new Error(data?.error || 'Deletion failed');
-              }
-            } catch (error) {
-              console.error('Delete data error:', error);
-              Alert.alert(
-                'Deletion Failed',
-                `We couldn't complete your request. Please contact ${APP_CONFIG.privacyEmail} for manual deletion.`
-              );
-            } finally {
-              setIsDeletingData(false);
+            if (error) {
+              throw new Error(error.message);
             }
-          },
+
+            if (data?.success) {
+              // Clear local session and biometric data
+              await biometricsService.clearSession();
+              await authService.signOut();
+              Alert.alert(
+                'Data Deleted',
+                'Your account and all associated data have been permanently deleted.'
+              );
+            } else {
+              throw new Error(data?.error || 'Deletion failed');
+            }
+          } catch (error) {
+            console.error('Delete data error:', error);
+            Alert.alert(
+              'Deletion Failed',
+              `We couldn't complete your request. Please contact ${APP_CONFIG.privacyEmail} for manual deletion.`
+            );
+          } finally {
+            setIsDeletingData(false);
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const openUrl = (url: string) => {
@@ -155,14 +151,13 @@ export function SettingsScreen() {
           <View style={styles.card}>
             <View style={styles.profileRow}>
               <View style={styles.avatar}>
-                <Text style={styles.avatarText}>
-                  {user?.email?.charAt(0).toUpperCase() || 'U'}
-                </Text>
+                <Text style={styles.avatarText}>{user?.email?.charAt(0).toUpperCase() || 'U'}</Text>
               </View>
               <View style={styles.profileInfo}>
                 <Text style={styles.profileEmail}>{user?.email || 'Not signed in'}</Text>
                 <Text style={styles.profileStance}>
-                  {user?.profile?.stance || 'Orthodox'} • {user?.profile?.experienceLevel || 'Beginner'}
+                  {user?.profile?.stance || 'Orthodox'} •{' '}
+                  {user?.profile?.experienceLevel || 'Beginner'}
                 </Text>
               </View>
               <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
@@ -175,10 +170,12 @@ export function SettingsScreen() {
           <Text style={styles.sectionTitle}>Subscription</Text>
           <Pressable
             style={styles.card}
-            onPress={() => navigation.navigate('Home', {
-              screen: 'Paywall',
-              params: { source: 'settings' },
-            } as any)}
+            onPress={() =>
+              navigation.navigate('Home', {
+                screen: 'Paywall',
+                params: { source: 'settings' },
+              } as any)
+            }
           >
             <View style={styles.row}>
               <View style={styles.rowLeft}>
@@ -188,13 +185,9 @@ export function SettingsScreen() {
                   color={isPremium ? colors.accent : colors.textTertiary}
                 />
                 <View style={styles.rowContent}>
-                  <Text style={styles.rowTitle}>
-                    {isPremium ? 'Premium Member' : 'Free Plan'}
-                  </Text>
+                  <Text style={styles.rowTitle}>{isPremium ? 'Premium Member' : 'Free Plan'}</Text>
                   <Text style={styles.rowSubtitle}>
-                    {isPremium
-                      ? 'Unlimited analyses'
-                      : '3 analyses per day'}
+                    {isPremium ? 'Unlimited analyses' : '3 analyses per day'}
                   </Text>
                 </View>
               </View>
@@ -268,10 +261,7 @@ export function SettingsScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Legal</Text>
           <View style={styles.card}>
-            <Pressable
-              style={styles.row}
-              onPress={() => openUrl(APP_CONFIG.urls.privacy)}
-            >
+            <Pressable style={styles.row} onPress={() => openUrl(APP_CONFIG.urls.privacy)}>
               <View style={styles.rowLeft}>
                 <Ionicons name="shield-checkmark" size={24} color={colors.textTertiary} />
                 <Text style={styles.rowTitle}>Privacy Policy</Text>
@@ -281,10 +271,7 @@ export function SettingsScreen() {
 
             <View style={styles.divider} />
 
-            <Pressable
-              style={styles.row}
-              onPress={() => openUrl(APP_CONFIG.urls.terms)}
-            >
+            <Pressable style={styles.row} onPress={() => openUrl(APP_CONFIG.urls.terms)}>
               <View style={styles.rowLeft}>
                 <Ionicons name="document-text" size={24} color={colors.textTertiary} />
                 <Text style={styles.rowTitle}>Terms of Service</Text>
@@ -294,10 +281,7 @@ export function SettingsScreen() {
 
             <View style={styles.divider} />
 
-            <Pressable
-              style={styles.row}
-              onPress={() => openUrl(APP_CONFIG.urls.eula)}
-            >
+            <Pressable style={styles.row} onPress={() => openUrl(APP_CONFIG.urls.eula)}>
               <View style={styles.rowLeft}>
                 <Ionicons name="reader" size={24} color={colors.textTertiary} />
                 <Text style={styles.rowTitle}>End User License Agreement</Text>
@@ -307,10 +291,7 @@ export function SettingsScreen() {
 
             <View style={styles.divider} />
 
-            <Pressable
-              style={styles.row}
-              onPress={() => openUrl('https://anthropic.com/privacy')}
-            >
+            <Pressable style={styles.row} onPress={() => openUrl('https://anthropic.com/privacy')}>
               <View style={styles.rowLeft}>
                 <Ionicons name="information-circle" size={24} color={colors.textTertiary} />
                 <Text style={styles.rowTitle}>AI Provider Privacy (Anthropic)</Text>
@@ -324,10 +305,7 @@ export function SettingsScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Support</Text>
           <View style={styles.card}>
-            <Pressable
-              style={styles.row}
-              onPress={() => openEmail(APP_CONFIG.supportEmail)}
-            >
+            <Pressable style={styles.row} onPress={() => openEmail(APP_CONFIG.supportEmail)}>
               <View style={styles.rowLeft}>
                 <Ionicons name="mail" size={24} color={colors.textTertiary} />
                 <View style={styles.rowContent}>

@@ -56,10 +56,12 @@ export type HomeStackParamList = {
 
 // Drill Stack
 export type DrillStackParamList = {
-  DrillLibrary: {
-    recommendedDrillIds?: string[];
-    rootCause?: string;
-  } | undefined;
+  DrillLibrary:
+    | {
+        recommendedDrillIds?: string[];
+        rootCause?: string;
+      }
+    | undefined;
   DrillDetail: {
     drillId: string;
   };

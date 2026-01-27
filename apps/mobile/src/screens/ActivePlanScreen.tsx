@@ -1,13 +1,6 @@
 // Active Training Plan Screen
 import React, { useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -28,9 +21,7 @@ export function ActivePlanScreen() {
   const getTodayTraining = useTrainingStore((state) => state.getTodayTraining);
   const isCurrentDayCompleted = useTrainingStore((state) => state.isCurrentDayCompleted);
 
-  const plan = activePlan
-    ? TRAINING_PLANS.find((p) => p.id === activePlan.planId)
-    : null;
+  const plan = activePlan ? TRAINING_PLANS.find((p) => p.id === activePlan.planId) : null;
   const progress = getPlanProgress();
   const todayTraining = getTodayTraining();
   const isDayCompleted = isCurrentDayCompleted();
@@ -147,12 +138,7 @@ export function ActivePlanScreen() {
             </View>
           </View>
           <View style={styles.progressBar}>
-            <View
-              style={[
-                styles.progressFill,
-                { width: `${progress?.percentComplete || 0}%` },
-              ]}
-            />
+            <View style={[styles.progressFill, { width: `${progress?.percentComplete || 0}%` }]} />
           </View>
           <View style={styles.progressMeta}>
             <View style={styles.metaItem}>
@@ -191,9 +177,7 @@ export function ActivePlanScreen() {
               <View style={styles.restDay}>
                 <Ionicons name="bed-outline" size={32} color={colors.textTertiary} />
                 <Text style={styles.restDayText}>Rest Day</Text>
-                <Text style={styles.restDaySubtext}>
-                  Take it easy and recover for tomorrow
-                </Text>
+                <Text style={styles.restDaySubtext}>Take it easy and recover for tomorrow</Text>
               </View>
             ) : (
               <View style={styles.drillsList}>
@@ -214,11 +198,7 @@ export function ActivePlanScreen() {
                         <Text style={styles.drillName}>{drill.name}</Text>
                         <Text style={styles.drillDuration}>~{drill.duration} min</Text>
                       </View>
-                      <Ionicons
-                        name="chevron-forward"
-                        size={20}
-                        color={colors.textTertiary}
-                      />
+                      <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
                     </Pressable>
                   );
                 })}
@@ -254,8 +234,7 @@ export function ActivePlanScreen() {
             {currentWeek?.days.map((day, index) => {
               const isToday = index + 1 === activePlan.currentDay;
               const isCompleted = activePlan.completedDays.some(
-                (d) =>
-                  d.weekNumber === activePlan.currentWeek && d.dayNumber === index + 1
+                (d) => d.weekNumber === activePlan.currentWeek && d.dayNumber === index + 1
               );
 
               return (
@@ -274,10 +253,7 @@ export function ActivePlanScreen() {
                     <Ionicons name="remove" size={16} color={colors.textTertiary} />
                   ) : (
                     <Text
-                      style={[
-                        styles.dayIndicatorText,
-                        isToday && styles.dayIndicatorTextToday,
-                      ]}
+                      style={[styles.dayIndicatorText, isToday && styles.dayIndicatorTextToday]}
                     >
                       {index + 1}
                     </Text>

@@ -16,13 +16,7 @@ export const DEFAULT_AUDIO_COACHING_SETTINGS: AudioCoachingSettings = {
   language: 'en-US',
 };
 
-export type SoundType =
-  | 'bell_start'
-  | 'bell_end'
-  | 'warning'
-  | 'countdown'
-  | 'success'
-  | 'error';
+export type SoundType = 'bell_start' | 'bell_end' | 'warning' | 'countdown' | 'success' | 'error';
 
 export interface DrillStepAudio {
   instruction: string;

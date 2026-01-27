@@ -2,12 +2,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import type {
-  UserGamificationState,
-  Achievement,
-  XPGain,
-  Level,
-} from '@/types/gamification';
+import type { UserGamificationState, Achievement, XPGain, Level } from '@/types/gamification';
 import { LEVELS, XP_REWARDS } from '@/types/gamification';
 import { ACHIEVEMENTS } from '@/data/achievements';
 
@@ -97,10 +92,13 @@ export const useGamificationStore = create<GamificationStore>()(
             achievements: [...state.achievements, achievementId],
             xp: newXP,
             level: newLevel,
-            pendingAchievements: [...state.pendingAchievements, {
-              ...achievement,
-              unlockedAt: new Date().toISOString(),
-            }],
+            pendingAchievements: [
+              ...state.pendingAchievements,
+              {
+                ...achievement,
+                unlockedAt: new Date().toISOString(),
+              },
+            ],
           };
         });
       },
@@ -296,6 +294,5 @@ export const selectXPProgress = (state: GamificationStore) => {
 export const selectCurrentStreak = (state: GamificationStore) => state.currentStreak;
 export const selectAchievements = (state: GamificationStore) =>
   ACHIEVEMENTS.filter((a) => state.achievements.includes(a.id));
-export const selectPendingAchievements = (state: GamificationStore) =>
-  state.pendingAchievements;
+export const selectPendingAchievements = (state: GamificationStore) => state.pendingAchievements;
 export const selectPendingXPGains = (state: GamificationStore) => state.pendingXPGains;

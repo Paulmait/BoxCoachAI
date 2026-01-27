@@ -32,15 +32,10 @@ export function useVideoSync(): UseVideoSyncReturn {
     isMuted: false,
   });
 
-  
-  
   // Play both videos
   const play = useCallback(async () => {
     try {
-      await Promise.all([
-        video1Ref.current?.playAsync(),
-        video2Ref.current?.playAsync(),
-      ]);
+      await Promise.all([video1Ref.current?.playAsync(), video2Ref.current?.playAsync()]);
       setState((prev) => ({ ...prev, isPlaying: true }));
     } catch (error) {
       console.error('Error playing videos:', error);
@@ -50,10 +45,7 @@ export function useVideoSync(): UseVideoSyncReturn {
   // Pause both videos
   const pause = useCallback(async () => {
     try {
-      await Promise.all([
-        video1Ref.current?.pauseAsync(),
-        video2Ref.current?.pauseAsync(),
-      ]);
+      await Promise.all([video1Ref.current?.pauseAsync(), video2Ref.current?.pauseAsync()]);
       setState((prev) => ({ ...prev, isPlaying: false }));
     } catch (error) {
       console.error('Error pausing videos:', error);

@@ -63,7 +63,8 @@ export default {
     signInWith: 'Sign in with {{provider}}',
     orContinueWith: 'Or continue with',
     checkEmail: 'Check Your Email',
-    verificationSent: 'We sent you a verification link. Please check your email to complete signup.',
+    verificationSent:
+      'We sent you a verification link. Please check your email to complete signup.',
     passwordRequirements: 'At least 8 characters',
     termsAgree: 'I agree to the',
     termsOfService: 'Terms of Service',
@@ -342,7 +343,8 @@ export default {
     feedback: 'Send Feedback',
     rateApp: 'Rate App',
     deleteAccount: 'Delete Account',
-    deleteAccountConfirm: 'Are you sure you want to delete your account? This action cannot be undone.',
+    deleteAccountConfirm:
+      'Are you sure you want to delete your account? This action cannot be undone.',
     health: 'Health Integration',
     healthSync: 'Sync with Health App',
     healthPermissions: 'Health Permissions',

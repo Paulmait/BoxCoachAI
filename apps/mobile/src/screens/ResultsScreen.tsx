@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -27,8 +21,8 @@ export function ResultsScreen() {
   const route = useRoute<RouteProp>();
   const { analysisId } = route.params;
 
-  const analysis = useAppStore((state) =>
-    state.analysisHistory.find((a) => a.id === analysisId) || state.currentAnalysis
+  const analysis = useAppStore(
+    (state) => state.analysisHistory.find((a) => a.id === analysisId) || state.currentAnalysis
   );
 
   if (!analysis) {
@@ -149,28 +143,26 @@ export function ResultsScreen() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Recommended Drills</Text>
-              <Pressable onPress={() => navigation.navigate('Home', {
-                screen: 'HomeMain',
-              })}>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate('Home', {
+                    screen: 'HomeMain',
+                  })
+                }
+              >
                 <Text style={styles.sectionLink}>View All</Text>
               </Pressable>
             </View>
-            {recommendedDrills.map((drill) => drill && (
-              <DrillRecommendationCard
-                key={drill.id}
-                drill={drill}
-                onPress={() => {}}
-              />
-            ))}
+            {recommendedDrills.map(
+              (drill) =>
+                drill && <DrillRecommendationCard key={drill.id} drill={drill} onPress={() => {}} />
+            )}
           </View>
         )}
 
         {/* Analyze Again CTA */}
         <View style={styles.ctaSection}>
-          <Pressable
-            style={styles.ctaButton}
-            onPress={() => navigation.navigate('Record')}
-          >
+          <Pressable style={styles.ctaButton} onPress={() => navigation.navigate('Record')}>
             <Ionicons name="videocam" size={24} color={colors.textPrimary} />
             <Text style={styles.ctaButtonText}>Analyze Another Video</Text>
           </Pressable>

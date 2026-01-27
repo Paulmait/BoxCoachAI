@@ -89,7 +89,7 @@ async function processQueue(): Promise<void> {
       try {
         await speak(text);
         // Small pause between queued items
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
       } catch (error) {
         console.debug('Speech failed:', error);
       }
@@ -144,9 +144,8 @@ export async function speakTimerPhase(
 
   switch (phase) {
     case 'round':
-      announcement = roundNumber && totalRounds
-        ? `Round ${roundNumber} of ${totalRounds}. Fight!`
-        : 'Fight!';
+      announcement =
+        roundNumber && totalRounds ? `Round ${roundNumber} of ${totalRounds}. Fight!` : 'Fight!';
       break;
     case 'rest':
       announcement = 'Time! Rest.';
@@ -178,7 +177,7 @@ export async function getVoices(language?: string): Promise<Speech.Voice[]> {
   try {
     const voices = await Speech.getAvailableVoicesAsync();
     if (language) {
-      return voices.filter(v => v.language.startsWith(language));
+      return voices.filter((v) => v.language.startsWith(language));
     }
     return voices;
   } catch {

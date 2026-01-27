@@ -42,9 +42,7 @@ export function RootCauseCard({ rootCause }: RootCauseCardProps) {
           <View
             style={[styles.severityDot, { backgroundColor: getSeverityColor(rootCause.severity) }]}
           />
-          <Text
-            style={[styles.severityText, { color: getSeverityColor(rootCause.severity) }]}
-          >
+          <Text style={[styles.severityText, { color: getSeverityColor(rootCause.severity) }]}>
             {rootCause.severity} priority
           </Text>
         </View>
@@ -67,9 +65,7 @@ export function RootCauseCard({ rootCause }: RootCauseCardProps) {
           <View style={styles.drillTags}>
             {rootCause.recommendedDrills.map((drillId, index) => (
               <View key={index} style={styles.drillTag}>
-                <Text style={styles.drillTagText}>
-                  {drillId.replace('_', ' ')}
-                </Text>
+                <Text style={styles.drillTagText}>{drillId.replace('_', ' ')}</Text>
               </View>
             ))}
           </View>

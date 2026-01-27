@@ -1,5 +1,10 @@
 import { renderHook, act } from '@testing-library/react-native';
-import { useAppStore, selectCanAnalyze, selectRemainingAnalyses, FREE_ANALYSIS_LIMIT } from '@/store/useAppStore';
+import {
+  useAppStore,
+  selectCanAnalyze,
+  selectRemainingAnalyses,
+  FREE_ANALYSIS_LIMIT,
+} from '@/store/useAppStore';
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({

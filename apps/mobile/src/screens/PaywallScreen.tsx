@@ -24,7 +24,11 @@ type RouteProp = HomeStackScreenProps<'Paywall'>['route'];
 const FEATURES = {
   basic: [
     { icon: 'infinite', title: 'Unlimited Analyses', description: 'No daily limits' },
-    { icon: 'trending-up', title: 'Progress Tracking', description: 'Track improvements over time' },
+    {
+      icon: 'trending-up',
+      title: 'Progress Tracking',
+      description: 'Track improvements over time',
+    },
     { icon: 'fitness', title: 'Full Drill Library', description: 'Access all drills' },
     { icon: 'time', title: 'Analysis History', description: 'Review past sessions' },
   ],
@@ -54,7 +58,9 @@ export function PaywallScreen() {
   const getPrice = (plan: PlanType, period: BillingPeriod): string => {
     const config = SUBSCRIPTION_CONFIG.products;
     if (plan === 'basic') {
-      return period === 'monthly' ? config.basicMonthly.priceString : config.basicAnnual.priceString;
+      return period === 'monthly'
+        ? config.basicMonthly.priceString
+        : config.basicAnnual.priceString;
     }
     return period === 'monthly' ? config.proMonthly.priceString : config.proAnnual.priceString;
   };
@@ -84,11 +90,9 @@ export function PaywallScreen() {
       const success = await subscriptionService.purchase(identifier);
       if (success) {
         setIsPremium(true);
-        Alert.alert(
-          'Welcome to Premium!',
-          'You now have unlimited access to all features.',
-          [{ text: 'OK', onPress: () => navigation.goBack() }]
-        );
+        Alert.alert('Welcome to Premium!', 'You now have unlimited access to all features.', [
+          { text: 'OK', onPress: () => navigation.goBack() },
+        ]);
       }
     } catch (error) {
       Alert.alert('Purchase Failed', 'Please try again later.');
@@ -107,7 +111,7 @@ export function PaywallScreen() {
           { text: 'OK', onPress: () => navigation.goBack() },
         ]);
       } else {
-        Alert.alert('No Subscription Found', 'We couldn\'t find any previous purchases.');
+        Alert.alert('No Subscription Found', "We couldn't find any previous purchases.");
       }
     } catch (error) {
       Alert.alert('Restore Failed', 'Please try again later.');
@@ -119,7 +123,7 @@ export function PaywallScreen() {
   const getHeaderText = () => {
     switch (source) {
       case 'limit_reached':
-        return 'You\'ve reached your daily limit';
+        return "You've reached your daily limit";
       case 'feature_locked':
         return 'Unlock this feature';
       default:
@@ -148,9 +152,7 @@ export function PaywallScreen() {
             <Ionicons name="trophy" size={48} color={colors.accent} />
           </View>
           <Text style={styles.title}>{getHeaderText()}</Text>
-          <Text style={styles.subtitle}>
-            Unlock your full boxing potential with AI coaching
-          </Text>
+          <Text style={styles.subtitle}>Unlock your full boxing potential with AI coaching</Text>
         </View>
 
         {/* Trial Badge */}
@@ -167,7 +169,12 @@ export function PaywallScreen() {
             style={[styles.planButton, selectedPlan === 'basic' && styles.planButtonActive]}
             onPress={() => setSelectedPlan('basic')}
           >
-            <Text style={[styles.planButtonText, selectedPlan === 'basic' && styles.planButtonTextActive]}>
+            <Text
+              style={[
+                styles.planButtonText,
+                selectedPlan === 'basic' && styles.planButtonTextActive,
+              ]}
+            >
               Basic
             </Text>
           </Pressable>
@@ -175,7 +182,9 @@ export function PaywallScreen() {
             style={[styles.planButton, selectedPlan === 'pro' && styles.planButtonActive]}
             onPress={() => setSelectedPlan('pro')}
           >
-            <Text style={[styles.planButtonText, selectedPlan === 'pro' && styles.planButtonTextActive]}>
+            <Text
+              style={[styles.planButtonText, selectedPlan === 'pro' && styles.planButtonTextActive]}
+            >
               Pro
             </Text>
             <View style={styles.popularBadge}>
@@ -211,7 +220,9 @@ export function PaywallScreen() {
               </View>
             )}
             <View style={styles.periodHeader}>
-              <View style={[styles.radioOuter, selectedPeriod === 'annual' && styles.radioOuterActive]}>
+              <View
+                style={[styles.radioOuter, selectedPeriod === 'annual' && styles.radioOuterActive]}
+              >
                 {selectedPeriod === 'annual' && <View style={styles.radioInner} />}
               </View>
               <Text style={styles.periodTitle}>Annual</Text>
@@ -228,7 +239,9 @@ export function PaywallScreen() {
             onPress={() => setSelectedPeriod('monthly')}
           >
             <View style={styles.periodHeader}>
-              <View style={[styles.radioOuter, selectedPeriod === 'monthly' && styles.radioOuterActive]}>
+              <View
+                style={[styles.radioOuter, selectedPeriod === 'monthly' && styles.radioOuterActive]}
+              >
                 {selectedPeriod === 'monthly' && <View style={styles.radioInner} />}
               </View>
               <Text style={styles.periodTitle}>Monthly</Text>
@@ -260,7 +273,10 @@ export function PaywallScreen() {
         </Pressable>
 
         <Text style={styles.disclaimer}>
-          Cancel anytime. After free trial, {selectedPeriod === 'annual' ? 'annual' : 'monthly'} subscription auto-renews at {getPrice(selectedPlan, selectedPeriod)}/{selectedPeriod === 'annual' ? 'year' : 'month'} unless cancelled at least 24 hours before the end of the current period.
+          Cancel anytime. After free trial, {selectedPeriod === 'annual' ? 'annual' : 'monthly'}{' '}
+          subscription auto-renews at {getPrice(selectedPlan, selectedPeriod)}/
+          {selectedPeriod === 'annual' ? 'year' : 'month'} unless cancelled at least 24 hours before
+          the end of the current period.
         </Text>
       </View>
     </SafeAreaView>

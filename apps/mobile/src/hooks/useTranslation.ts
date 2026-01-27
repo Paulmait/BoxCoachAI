@@ -1,6 +1,14 @@
 // Translation Hook
 import { useState, useEffect, useCallback } from 'react';
-import { i18n, t, setLanguage, getCurrentLanguage, initializeI18n, SUPPORTED_LANGUAGES, type LanguageCode } from '@/i18n';
+import {
+  i18n,
+  t,
+  setLanguage,
+  getCurrentLanguage,
+  initializeI18n,
+  SUPPORTED_LANGUAGES,
+  type LanguageCode,
+} from '@/i18n';
 
 interface UseTranslationReturn {
   t: (key: string, options?: Record<string, unknown>) => string;
@@ -40,10 +48,13 @@ export function useTranslation(): UseTranslationReturn {
   }, []);
 
   // Create a translate function that triggers re-render on locale change
-  const translate = useCallback((key: string, options?: Record<string, unknown>) => {
-    // Force dependency on locale for re-renders
-    return i18n.t(key, options);
-  }, [locale]); // eslint-disable-line react-hooks/exhaustive-deps
+  const translate = useCallback(
+    (key: string, options?: Record<string, unknown>) => {
+      // Force dependency on locale for re-renders
+      return i18n.t(key, options);
+    },
+    [locale]
+  ); // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     t: translate,

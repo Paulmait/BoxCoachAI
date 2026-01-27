@@ -11,7 +11,12 @@ interface ScoreRingProps {
   showLabel?: boolean;
 }
 
-export function ScoreRing({ score, size = 100, strokeWidth = 10, showLabel = true }: ScoreRingProps) {
+export function ScoreRing({
+  score,
+  size = 100,
+  strokeWidth = 10,
+  showLabel = true,
+}: ScoreRingProps) {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
   const progress = Math.min(Math.max(score, 0), 100) / 100;

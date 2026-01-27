@@ -1,12 +1,6 @@
 // Training Plans Screen
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -80,9 +74,7 @@ export function TrainingPlansScreen() {
               </View>
             )}
           </View>
-          {isLocked && (
-            <Ionicons name="lock-closed" size={20} color={colors.textTertiary} />
-          )}
+          {isLocked && <Ionicons name="lock-closed" size={20} color={colors.textTertiary} />}
         </View>
 
         <Text style={styles.planName}>{plan.name}</Text>
@@ -98,7 +90,8 @@ export function TrainingPlansScreen() {
           <View style={styles.planMetaItem}>
             <Ionicons name="time-outline" size={16} color={colors.textSecondary} />
             <Text style={styles.planMetaText}>
-              {plan.weeks.reduce((sum, w) => sum + w.days.filter((d) => !d.isRestDay).length, 0)} training days
+              {plan.weeks.reduce((sum, w) => sum + w.days.filter((d) => !d.isRestDay).length, 0)}{' '}
+              training days
             </Text>
           </View>
         </View>
@@ -143,10 +136,7 @@ export function TrainingPlansScreen() {
       >
         {/* Active Plan Summary */}
         {activePlan && (
-          <Pressable
-            style={styles.activeCard}
-            onPress={() => navigation.navigate('ActivePlan')}
-          >
+          <Pressable style={styles.activeCard} onPress={() => navigation.navigate('ActivePlan')}>
             <View style={styles.activeCardHeader}>
               <Text style={styles.activeCardTitle}>Current Plan</Text>
               <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
@@ -166,9 +156,7 @@ export function TrainingPlansScreen() {
                         ]}
                       />
                     </View>
-                    <Text style={styles.progressText}>
-                      {progress?.percentComplete}% complete
-                    </Text>
+                    <Text style={styles.progressText}>{progress?.percentComplete}% complete</Text>
                   </View>
                 </>
               );

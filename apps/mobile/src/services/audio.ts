@@ -66,10 +66,7 @@ export async function playSound(type: SoundType): Promise<void> {
       return;
     }
 
-    const { sound } = await Audio.Sound.createAsync(
-      soundFile,
-      { shouldPlay: true, volume: 1.0 }
-    );
+    const { sound } = await Audio.Sound.createAsync(soundFile, { shouldPlay: true, volume: 1.0 });
 
     // Store reference for cleanup
     sounds.set(type, sound);
@@ -145,10 +142,7 @@ export async function cleanupSounds(): Promise<void> {
 /**
  * Play timer transition sounds based on phase
  */
-export async function playTimerTransition(
-  _fromPhase: string,
-  toPhase: string
-): Promise<void> {
+export async function playTimerTransition(_fromPhase: string, toPhase: string): Promise<void> {
   if (toPhase === 'round') {
     await playRoundStartBell();
   } else if (toPhase === 'rest' || toPhase === 'complete') {

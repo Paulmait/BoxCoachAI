@@ -27,10 +27,7 @@ export function TechniqueCard({ technique }: TechniqueCardProps) {
   };
 
   return (
-    <Pressable
-      style={styles.container}
-      onPress={() => setIsExpanded(!isExpanded)}
-    >
+    <Pressable style={styles.container} onPress={() => setIsExpanded(!isExpanded)}>
       <View style={styles.header}>
         <View style={styles.categoryInfo}>
           <Text style={styles.categoryName}>{formatCategoryName(technique.category)}</Text>

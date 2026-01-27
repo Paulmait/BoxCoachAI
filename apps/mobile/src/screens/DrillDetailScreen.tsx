@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -44,11 +37,9 @@ export function DrillDetailScreen() {
   };
 
   const handleComplete = () => {
-    Alert.alert(
-      'Drill Completed!',
-      'Great work! Keep practicing to improve your technique.',
-      [{ text: 'Done', onPress: () => navigation.goBack() }]
-    );
+    Alert.alert('Drill Completed!', 'Great work! Keep practicing to improve your technique.', [
+      { text: 'Done', onPress: () => navigation.goBack() },
+    ]);
   };
 
   const currentStep = drill.steps[currentStepIndex];
@@ -108,9 +99,7 @@ export function DrillDetailScreen() {
                 {drill.equipment.map((eq, index) => (
                   <View key={index} style={styles.equipmentItem}>
                     <Ionicons name="checkmark-circle" size={16} color={colors.success} />
-                    <Text style={styles.equipmentText}>
-                      {eq.replace('_', ' ')}
-                    </Text>
+                    <Text style={styles.equipmentText}>{eq.replace('_', ' ')}</Text>
                   </View>
                 ))}
               </View>
@@ -164,9 +153,7 @@ export function DrillDetailScreen() {
 
           <View style={styles.stepCard}>
             <Text style={styles.stepInstruction}>{currentStep?.instruction}</Text>
-            {currentStep?.reps && (
-              <Text style={styles.stepDetail}>Reps: {currentStep.reps}</Text>
-            )}
+            {currentStep?.reps && <Text style={styles.stepDetail}>Reps: {currentStep.reps}</Text>}
             {currentStep?.duration && (
               <Text style={styles.stepDetail}>Duration: {currentStep.duration}s</Text>
             )}

@@ -1,12 +1,6 @@
 // Video Comparison Screen
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  Dimensions,
-} from 'react-native';
+import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -31,15 +25,8 @@ export function CompareScreen() {
   const analysis1 = analysisHistory.find((a) => a.id === analysisId1);
   const analysis2 = analysisHistory.find((a) => a.id === analysisId2);
 
-  const {
-    state,
-    video1Ref,
-    video2Ref,
-    togglePlayPause,
-    seek,
-    toggleMute,
-    restart,
-  } = useVideoSync();
+  const { state, video1Ref, video2Ref, togglePlayPause, seek, toggleMute, restart } =
+    useVideoSync();
 
   const handleSeek = (value: number) => {
     hapticLight();
@@ -94,9 +81,7 @@ export function CompareScreen() {
               <Text style={styles.scoreText}>{analysis1.overallScore}</Text>
             </View>
           </View>
-          <Text style={styles.dateText}>
-            {new Date(analysis1.analyzedAt).toLocaleDateString()}
-          </Text>
+          <Text style={styles.dateText}>{new Date(analysis1.analyzedAt).toLocaleDateString()}</Text>
         </View>
 
         <View style={styles.videoWrapper}>
@@ -114,9 +99,7 @@ export function CompareScreen() {
               <Text style={styles.scoreText}>{analysis2.overallScore}</Text>
             </View>
           </View>
-          <Text style={styles.dateText}>
-            {new Date(analysis2.analyzedAt).toLocaleDateString()}
-          </Text>
+          <Text style={styles.dateText}>{new Date(analysis2.analyzedAt).toLocaleDateString()}</Text>
         </View>
       </View>
 
@@ -125,9 +108,7 @@ export function CompareScreen() {
         {scoreChange > 0 ? (
           <View style={[styles.improvementBadge, styles.improvementPositive]}>
             <Ionicons name="arrow-up" size={20} color={colors.success} />
-            <Text style={styles.improvementText}>
-              Improved by {scoreChange} points!
-            </Text>
+            <Text style={styles.improvementText}>Improved by {scoreChange} points!</Text>
           </View>
         ) : scoreChange < 0 ? (
           <View style={[styles.improvementBadge, styles.improvementNegative]}>
@@ -225,7 +206,8 @@ export function CompareScreen() {
                       change > 0 ? styles.scoreChangePositive : styles.scoreChangeNegative,
                     ]}
                   >
-                    {change > 0 ? '+' : ''}{change}
+                    {change > 0 ? '+' : ''}
+                    {change}
                   </Text>
                 )}
               </View>

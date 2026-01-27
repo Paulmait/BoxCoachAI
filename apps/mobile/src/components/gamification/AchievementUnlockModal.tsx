@@ -1,13 +1,6 @@
 // Achievement Unlock Modal
 import React, { useEffect, useRef } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  Pressable,
-  Animated,
-} from 'react-native';
+import { View, Text, StyleSheet, Modal, Pressable, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { colors, spacing, fontSize, borderRadius, shadows } from '@/constants/theme';
@@ -61,12 +54,7 @@ export function AchievementUnlockModal({
   });
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="fade"
-      onRequestClose={onClose}
-    >
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <View style={styles.overlay}>
         <Animated.View
           style={[
@@ -80,23 +68,12 @@ export function AchievementUnlockModal({
 
           <Text style={styles.unlockText}>Achievement Unlocked!</Text>
 
-          <Animated.View
-            style={[
-              styles.iconContainer,
-              { transform: [{ rotate }] },
-            ]}
-          >
-            <Ionicons
-              name={achievement.icon as any}
-              size={64}
-              color={colors.textPrimary}
-            />
+          <Animated.View style={[styles.iconContainer, { transform: [{ rotate }] }]}>
+            <Ionicons name={achievement.icon as any} size={64} color={colors.textPrimary} />
           </Animated.View>
 
           <Text style={styles.achievementName}>{achievement.name}</Text>
-          <Text style={styles.achievementDescription}>
-            {achievement.description}
-          </Text>
+          <Text style={styles.achievementDescription}>{achievement.description}</Text>
 
           <View style={styles.rewardContainer}>
             <Ionicons name="star" size={20} color={colors.accent} />

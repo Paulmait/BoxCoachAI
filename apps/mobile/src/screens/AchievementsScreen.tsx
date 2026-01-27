@@ -1,17 +1,15 @@
 // Achievements Screen
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { useGamificationStore, selectXPProgress, selectLevelInfo } from '@/store/useGamificationStore';
+import {
+  useGamificationStore,
+  selectXPProgress,
+  selectLevelInfo,
+} from '@/store/useGamificationStore';
 import { ACHIEVEMENTS, getAchievementsByCategory } from '@/data/achievements';
 import { colors, spacing, fontSize, borderRadius, shadows } from '@/constants/theme';
 import type { AchievementCategory } from '@/types/gamification';
@@ -61,12 +59,7 @@ export function AchievementsScreen() {
             <Text style={styles.levelName}>{levelInfo.name}</Text>
             <Text style={styles.xpText}>{xp} XP</Text>
             <View style={styles.progressBar}>
-              <View
-                style={[
-                  styles.progressFill,
-                  { width: `${xpProgress.percentage}%` },
-                ]}
-              />
+              <View style={[styles.progressFill, { width: `${xpProgress.percentage}%` }]} />
             </View>
             <Text style={styles.progressText}>
               {xpProgress.current} / {xpProgress.required} to next level
@@ -78,7 +71,9 @@ export function AchievementsScreen() {
         <View style={styles.statsRow}>
           <View style={styles.statCard}>
             <Ionicons name="trophy" size={24} color={colors.accent} />
-            <Text style={styles.statValue}>{unlockedCount}/{totalCount}</Text>
+            <Text style={styles.statValue}>
+              {unlockedCount}/{totalCount}
+            </Text>
             <Text style={styles.statLabel}>Unlocked</Text>
           </View>
           <View style={styles.statCard}>
@@ -91,9 +86,7 @@ export function AchievementsScreen() {
         {/* Achievement Categories */}
         {CATEGORIES.map((category) => {
           const categoryAchievements = getAchievementsByCategory(category.id);
-          const unlockedInCategory = categoryAchievements.filter((a) =>
-            unlockedIds.includes(a.id)
-          );
+          const unlockedInCategory = categoryAchievements.filter((a) => unlockedIds.includes(a.id));
 
           return (
             <View key={category.id} style={styles.section}>
@@ -114,10 +107,7 @@ export function AchievementsScreen() {
                   return (
                     <View
                       key={achievement.id}
-                      style={[
-                        styles.achievementCard,
-                        !isUnlocked && styles.achievementLocked,
-                      ]}
+                      style={[styles.achievementCard, !isUnlocked && styles.achievementLocked]}
                     >
                       <View
                         style={[
@@ -140,10 +130,7 @@ export function AchievementsScreen() {
                       >
                         {achievement.name}
                       </Text>
-                      <Text
-                        style={styles.achievementDescription}
-                        numberOfLines={2}
-                      >
+                      <Text style={styles.achievementDescription} numberOfLines={2}>
                         {achievement.description}
                       </Text>
                       <View style={styles.achievementReward}>
@@ -153,10 +140,7 @@ export function AchievementsScreen() {
                           color={isUnlocked ? colors.accent : colors.textTertiary}
                         />
                         <Text
-                          style={[
-                            styles.achievementXP,
-                            !isUnlocked && styles.achievementXPLocked,
-                          ]}
+                          style={[styles.achievementXP, !isUnlocked && styles.achievementXPLocked]}
                         >
                           {achievement.xpReward} XP
                         </Text>

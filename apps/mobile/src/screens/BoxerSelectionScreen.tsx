@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Pressable,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, Image, Pressable, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -50,7 +42,7 @@ export function BoxerSelectionScreen() {
       } else if (result.people.length === 0) {
         Alert.alert(
           'No People Detected',
-          'We couldn\'t detect anyone in the video. Please ensure you\'re clearly visible in frame.',
+          "We couldn't detect anyone in the video. Please ensure you're clearly visible in frame.",
           [{ text: 'OK', onPress: () => navigation.goBack() }]
         );
       }
@@ -94,11 +86,7 @@ export function BoxerSelectionScreen() {
     return (
       <Pressable
         key={person.id}
-        style={[
-          styles.boundingBox,
-          boxStyle,
-          isSelected && styles.boundingBoxSelected,
-        ]}
+        style={[styles.boundingBox, boxStyle, isSelected && styles.boundingBoxSelected]}
         onPress={() => handleSelectPerson(person.id)}
       >
         {person.label && (
@@ -167,19 +155,14 @@ export function BoxerSelectionScreen() {
         {detectedPeople.length === 1 && (
           <View style={styles.hint}>
             <Ionicons name="checkmark-circle" size={20} color={colors.success} />
-            <Text style={styles.hintText}>
-              We detected you in the video. Confirm to continue.
-            </Text>
+            <Text style={styles.hintText}>We detected you in the video. Confirm to continue.</Text>
           </View>
         )}
       </View>
 
       <View style={styles.footer}>
         <Pressable
-          style={[
-            styles.continueButton,
-            !selectedPersonId && styles.continueButtonDisabled,
-          ]}
+          style={[styles.continueButton, !selectedPersonId && styles.continueButtonDisabled]}
           onPress={handleContinue}
           disabled={!selectedPersonId}
         >
