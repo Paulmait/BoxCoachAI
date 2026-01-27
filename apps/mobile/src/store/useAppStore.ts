@@ -62,6 +62,15 @@ const DEFAULT_PREFERENCES: UserPreferences = {
   notificationsEnabled: true,
   preferredDrillDuration: 15,
   aiConsentGiven: false,
+  // New preferences for enhanced features
+  audioCoachingEnabled: true,
+  audioCoachingRate: 1.0,
+  audioCoachingVolume: 1.0,
+  hapticEnabled: true,
+  timerSoundEnabled: true,
+  timerVibrationEnabled: true,
+  healthSyncEnabled: false,
+  healthPermissionsGranted: false,
 };
 
 const FREE_DAILY_LIMIT = 3;

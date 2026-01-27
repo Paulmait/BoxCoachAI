@@ -21,7 +21,7 @@ export type MainTabParamList = {
   Home: NavigatorScreenParams<HomeStackParamList>;
   Drills: NavigatorScreenParams<DrillStackParamList>;
   Analyze: undefined;
-  Progress: undefined;
+  Progress: NavigatorScreenParams<ProgressStackParamList>;
   Settings: undefined;
 };
 
@@ -43,6 +43,15 @@ export type HomeStackParamList = {
   Paywall: {
     source?: 'limit_reached' | 'feature_locked' | 'settings';
   };
+  Timer: undefined;
+  Achievements: undefined;
+  TrainingPlans: undefined;
+  ActivePlan: undefined;
+  PlanDetail: {
+    planId: string;
+  };
+  ComboRandomizer: undefined;
+  Journal: undefined;
 };
 
 // Drill Stack
@@ -53,6 +62,15 @@ export type DrillStackParamList = {
   } | undefined;
   DrillDetail: {
     drillId: string;
+  };
+};
+
+// Progress Stack
+export type ProgressStackParamList = {
+  ProgressMain: undefined;
+  Compare: {
+    analysisId1: string;
+    analysisId2: string;
   };
 };
 
@@ -80,6 +98,11 @@ export type HomeStackScreenProps<T extends keyof HomeStackParamList> = Composite
 export type DrillStackScreenProps<T extends keyof DrillStackParamList> = CompositeScreenProps<
   NativeStackScreenProps<DrillStackParamList, T>,
   MainTabScreenProps<'Drills'>
+>;
+
+export type ProgressStackScreenProps<T extends keyof ProgressStackParamList> = CompositeScreenProps<
+  NativeStackScreenProps<ProgressStackParamList, T>,
+  MainTabScreenProps<'Progress'>
 >;
 
 // Declare global navigation types for useNavigation hook

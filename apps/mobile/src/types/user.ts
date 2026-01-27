@@ -28,6 +28,18 @@ export interface UserPreferences {
   aiConsentDate?: string;
   privacyPolicyAcceptedAt?: string;
   termsAcceptedAt?: string;
+  // Audio coaching preferences
+  audioCoachingEnabled?: boolean;
+  audioCoachingRate?: number;
+  audioCoachingVolume?: number;
+  // Haptic preferences
+  hapticEnabled?: boolean;
+  // Timer preferences
+  timerSoundEnabled?: boolean;
+  timerVibrationEnabled?: boolean;
+  // Health integration
+  healthSyncEnabled?: boolean;
+  healthPermissionsGranted?: boolean;
 }
 
 export interface UserSubscription {

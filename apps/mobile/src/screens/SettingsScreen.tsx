@@ -9,6 +9,7 @@ import {
   Alert,
   Linking,
   ActivityIndicator,
+  Modal,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -20,6 +21,7 @@ import { biometricsService } from '@/services/biometrics';
 import { APP_CONFIG } from '@/constants/config';
 import { DELETE_DATA_CONFIRMATION } from '@/constants/legal';
 import { colors, spacing, fontSize, borderRadius } from '@/constants/theme';
+import { useTranslation } from '@/hooks/useTranslation';
 import type { MainTabScreenProps } from '@/navigation/types';
 
 type NavigationProp = MainTabScreenProps<'Settings'>['navigation'];
@@ -31,6 +33,10 @@ export function SettingsScreen() {
   const preferences = useAppStore((state) => state.preferences);
   const updatePreferences = useAppStore((state) => state.updatePreferences);
   const [isDeletingData, setIsDeletingData] = useState(false);
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
+  const { t, locale, setLocale, languages } = useTranslation();
+
+  const currentLanguage = languages.find(l => l.code === locale) || languages[0];
 
   const handleBiometricsToggle = async (enabled: boolean) => {
     if (enabled) {
@@ -199,13 +205,13 @@ export function SettingsScreen() {
 
         {/* Preferences Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Preferences</Text>
+          <Text style={styles.sectionTitle}>{t('settings.preferences')}</Text>
           <View style={styles.card}>
             <View style={styles.row}>
               <View style={styles.rowLeft}>
                 <Ionicons name="notifications" size={24} color={colors.textTertiary} />
                 <View style={styles.rowContent}>
-                  <Text style={styles.rowTitle}>Notifications</Text>
+                  <Text style={styles.rowTitle}>{t('settings.notifications')}</Text>
                   <Text style={styles.rowSubtitle}>Drill reminders & tips</Text>
                 </View>
               </View>
@@ -216,6 +222,19 @@ export function SettingsScreen() {
                 thumbColor={preferences.notificationsEnabled ? colors.primary : colors.textTertiary}
               />
             </View>
+
+            <View style={styles.divider} />
+
+            <Pressable style={styles.row} onPress={() => setShowLanguageModal(true)}>
+              <View style={styles.rowLeft}>
+                <Ionicons name="language" size={24} color={colors.textTertiary} />
+                <View style={styles.rowContent}>
+                  <Text style={styles.rowTitle}>{t('settings.language')}</Text>
+                  <Text style={styles.rowSubtitle}>{currentLanguage.nativeName}</Text>
+                </View>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
+            </Pressable>
           </View>
         </View>
 
@@ -325,6 +344,46 @@ export function SettingsScreen() {
           <Text style={styles.version}>{APP_CONFIG.name} v1.0.0</Text>
         </View>
       </ScrollView>
+
+      {/* Language Selection Modal */}
+      <Modal
+        visible={showLanguageModal}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setShowLanguageModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <Pressable style={styles.modalBackdrop} onPress={() => setShowLanguageModal(false)} />
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>{t('settings.language')}</Text>
+              <Pressable onPress={() => setShowLanguageModal(false)}>
+                <Ionicons name="close" size={24} color={colors.textPrimary} />
+              </Pressable>
+            </View>
+            <ScrollView style={styles.languageList}>
+              {languages.map((language) => (
+                <Pressable
+                  key={language.code}
+                  style={styles.languageItem}
+                  onPress={async () => {
+                    await setLocale(language.code);
+                    setShowLanguageModal(false);
+                  }}
+                >
+                  <View style={styles.languageInfo}>
+                    <Text style={styles.languageNative}>{language.nativeName}</Text>
+                    <Text style={styles.languageName}>{language.name}</Text>
+                  </View>
+                  {locale === language.code && (
+                    <Ionicons name="checkmark-circle" size={24} color={colors.primary} />
+                  )}
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -458,5 +517,56 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     color: colors.textTertiary,
     marginTop: spacing.sm,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  modalBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: colors.surface,
+    borderTopLeftRadius: borderRadius.xl,
+    borderTopRightRadius: borderRadius.xl,
+    maxHeight: '70%',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: spacing.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
+  modalTitle: {
+    fontSize: fontSize.lg,
+    fontWeight: '600',
+    color: colors.textPrimary,
+  },
+  languageList: {
+    paddingHorizontal: spacing.lg,
+  },
+  languageItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
+  languageInfo: {
+    flex: 1,
+  },
+  languageNative: {
+    fontSize: fontSize.md,
+    fontWeight: '500',
+    color: colors.textPrimary,
+  },
+  languageName: {
+    fontSize: fontSize.sm,
+    color: colors.textSecondary,
+    marginTop: spacing.xs,
   },
 });

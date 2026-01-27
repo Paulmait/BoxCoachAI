@@ -11,8 +11,14 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useAppStore, selectRemainingAnalyses, selectCanAnalyze } from '@/store/useAppStore';
+import { useGamificationStore } from '@/store/useGamificationStore';
+import { useTrainingStore } from '@/store/useTrainingStore';
 import { colors, spacing, fontSize, borderRadius, shadows } from '@/constants/theme';
 import { ScoreRing } from '@/components/ScoreRing';
+import { StreakDisplay } from '@/components/gamification/StreakDisplay';
+import { LevelProgress } from '@/components/gamification/LevelProgress';
+import { TRAINING_PLANS } from '@/data/trainingPlans';
+import { hapticLight } from '@/utils/haptics';
 import type { HomeStackScreenProps } from '@/navigation/types';
 
 type NavigationProp = HomeStackScreenProps<'HomeMain'>['navigation'];
@@ -25,14 +31,53 @@ export function HomeScreen() {
   const remainingAnalyses = useAppStore(selectRemainingAnalyses);
   const canAnalyze = useAppStore(selectCanAnalyze);
 
+  // Gamification state
+  const xp = useGamificationStore((state) => state.xp);
+  const level = useGamificationStore((state) => state.level);
+  const currentStreak = useGamificationStore((state) => state.currentStreak);
+  const longestStreak = useGamificationStore((state) => state.longestStreak);
+
+  // Training plan state
+  const activePlan = useTrainingStore((state) => state.activePlan);
+  const getTodayTraining = useTrainingStore((state) => state.getTodayTraining);
+  const todayTraining = getTodayTraining();
+
   const latestAnalysis = analysisHistory[0];
+  const activePlanData = activePlan
+    ? TRAINING_PLANS.find((p) => p.id === activePlan.planId)
+    : null;
 
   const handleAnalyze = () => {
+    hapticLight();
     if (!canAnalyze) {
       navigation.navigate('Paywall', { source: 'limit_reached' });
       return;
     }
     navigation.navigate('Record');
+  };
+
+  const handleQuickAction = (action: string) => {
+    hapticLight();
+    switch (action) {
+      case 'timer':
+        navigation.navigate('Timer');
+        break;
+      case 'drills':
+        navigation.navigate('Drills' as any, { screen: 'DrillLibrary' });
+        break;
+      case 'plans':
+        navigation.navigate('TrainingPlans');
+        break;
+      case 'combos':
+        navigation.navigate('ComboRandomizer');
+        break;
+      case 'journal':
+        navigation.navigate('Journal');
+        break;
+      case 'achievements':
+        navigation.navigate('Achievements');
+        break;
+    }
   };
 
   return (
@@ -50,16 +95,61 @@ export function HomeScreen() {
             </Text>
             <Text style={styles.subtitle}>Ready to improve your technique?</Text>
           </View>
-          {!isPremium && (
-            <Pressable
-              style={styles.premiumBadge}
-              onPress={() => navigation.navigate('Paywall', { source: 'settings' })}
-            >
-              <Ionicons name="star" size={14} color={colors.accent} />
-              <Text style={styles.premiumBadgeText}>Upgrade</Text>
-            </Pressable>
-          )}
+          <View style={styles.headerRight}>
+            {currentStreak > 0 && (
+              <StreakDisplay
+                currentStreak={currentStreak}
+                longestStreak={longestStreak}
+                compact
+                onPress={() => navigation.navigate('Achievements')}
+              />
+            )}
+            {!isPremium && (
+              <Pressable
+                style={styles.premiumBadge}
+                onPress={() => navigation.navigate('Paywall', { source: 'settings' })}
+              >
+                <Ionicons name="star" size={14} color={colors.accent} />
+                <Text style={styles.premiumBadgeText}>Upgrade</Text>
+              </Pressable>
+            )}
+          </View>
         </View>
+
+        {/* Level Progress */}
+        <LevelProgress
+          level={level}
+          xp={xp}
+          onPress={() => navigation.navigate('Achievements')}
+        />
+
+        {/* Today's Training (if active plan) */}
+        {activePlanData && todayTraining && (
+          <Pressable
+            style={styles.todayCard}
+            onPress={() => navigation.navigate('ActivePlan')}
+          >
+            <View style={styles.todayHeader}>
+              <View style={styles.todayLabel}>
+                <Ionicons name="calendar" size={16} color={colors.primary} />
+                <Text style={styles.todayLabelText}>Today's Training</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
+            </View>
+            <Text style={styles.todayPlanName}>{activePlanData.name}</Text>
+            <Text style={styles.todayDay}>{todayTraining.dayName}</Text>
+            {todayTraining.isRestDay ? (
+              <View style={styles.restBadge}>
+                <Ionicons name="bed-outline" size={14} color={colors.info} />
+                <Text style={styles.restBadgeText}>Rest Day</Text>
+              </View>
+            ) : (
+              <Text style={styles.todayDrills}>
+                {todayTraining.drillIds.length} drill{todayTraining.drillIds.length !== 1 ? 's' : ''} to complete
+              </Text>
+            )}
+          </Pressable>
+        )}
 
         {/* Analyze CTA */}
         <Pressable style={styles.analyzeCard} onPress={handleAnalyze}>
@@ -125,24 +215,60 @@ export function HomeScreen() {
         {/* Quick Actions */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
-          <View style={styles.quickActions}>
-            <Pressable style={styles.quickAction}>
+          <View style={styles.quickActionsGrid}>
+            <Pressable
+              style={styles.quickAction}
+              onPress={() => handleQuickAction('timer')}
+            >
               <View style={[styles.quickActionIcon, { backgroundColor: colors.primary + '20' }]}>
-                <Ionicons name="fitness" size={24} color={colors.primary} />
+                <Ionicons name="timer" size={24} color={colors.primary} />
+              </View>
+              <Text style={styles.quickActionText}>Timer</Text>
+            </Pressable>
+            <Pressable
+              style={styles.quickAction}
+              onPress={() => handleQuickAction('drills')}
+            >
+              <View style={[styles.quickActionIcon, { backgroundColor: colors.success + '20' }]}>
+                <Ionicons name="fitness" size={24} color={colors.success} />
               </View>
               <Text style={styles.quickActionText}>Drills</Text>
             </Pressable>
-            <Pressable style={styles.quickAction}>
-              <View style={[styles.quickActionIcon, { backgroundColor: colors.info + '20' }]}>
-                <Ionicons name="trending-up" size={24} color={colors.info} />
+            <Pressable
+              style={styles.quickAction}
+              onPress={() => handleQuickAction('combos')}
+            >
+              <View style={[styles.quickActionIcon, { backgroundColor: colors.warning + '20' }]}>
+                <Ionicons name="flash" size={24} color={colors.warning} />
               </View>
-              <Text style={styles.quickActionText}>Progress</Text>
+              <Text style={styles.quickActionText}>Combos</Text>
             </Pressable>
-            <Pressable style={styles.quickAction}>
-              <View style={[styles.quickActionIcon, { backgroundColor: colors.success + '20' }]}>
-                <Ionicons name="time" size={24} color={colors.success} />
+            <Pressable
+              style={styles.quickAction}
+              onPress={() => handleQuickAction('plans')}
+            >
+              <View style={[styles.quickActionIcon, { backgroundColor: colors.info + '20' }]}>
+                <Ionicons name="calendar" size={24} color={colors.info} />
               </View>
-              <Text style={styles.quickActionText}>History</Text>
+              <Text style={styles.quickActionText}>Plans</Text>
+            </Pressable>
+            <Pressable
+              style={styles.quickAction}
+              onPress={() => handleQuickAction('journal')}
+            >
+              <View style={[styles.quickActionIcon, { backgroundColor: colors.accent + '20' }]}>
+                <Ionicons name="book" size={24} color={colors.accent} />
+              </View>
+              <Text style={styles.quickActionText}>Journal</Text>
+            </Pressable>
+            <Pressable
+              style={styles.quickAction}
+              onPress={() => handleQuickAction('achievements')}
+            >
+              <View style={[styles.quickActionIcon, { backgroundColor: colors.primary + '20' }]}>
+                <Ionicons name="trophy" size={24} color={colors.primary} />
+              </View>
+              <Text style={styles.quickActionText}>Badges</Text>
             </Pressable>
           </View>
         </View>
@@ -192,6 +318,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingVertical: spacing.lg,
   },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
   greeting: {
     fontSize: fontSize.xxl,
     fontWeight: '700',
@@ -216,6 +347,56 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.accent,
   },
+  todayCard: {
+    backgroundColor: colors.primary + '15',
+    borderRadius: borderRadius.xl,
+    padding: spacing.lg,
+    marginTop: spacing.lg,
+    borderWidth: 1,
+    borderColor: colors.primary + '30',
+  },
+  todayHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: spacing.sm,
+  },
+  todayLabel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  todayLabelText: {
+    fontSize: fontSize.sm,
+    fontWeight: '600',
+    color: colors.primary,
+  },
+  todayPlanName: {
+    fontSize: fontSize.lg,
+    fontWeight: '700',
+    color: colors.textPrimary,
+  },
+  todayDay: {
+    fontSize: fontSize.md,
+    color: colors.textSecondary,
+    marginTop: spacing.xs,
+  },
+  todayDrills: {
+    fontSize: fontSize.sm,
+    color: colors.textTertiary,
+    marginTop: spacing.sm,
+  },
+  restBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    marginTop: spacing.sm,
+  },
+  restBadgeText: {
+    fontSize: fontSize.sm,
+    color: colors.info,
+    fontWeight: '500',
+  },
   analyzeCard: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -223,6 +404,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     borderRadius: borderRadius.xl,
     padding: spacing.lg,
+    marginTop: spacing.lg,
     ...shadows.lg,
   },
   analyzeContent: {
@@ -332,13 +514,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: spacing.sm,
   },
-  quickActions: {
+  quickActionsGrid: {
     flexDirection: 'row',
-    gap: spacing.md,
+    flexWrap: 'wrap',
+    gap: spacing.sm,
     marginTop: spacing.md,
   },
   quickAction: {
-    flex: 1,
+    width: '31%',
     alignItems: 'center',
     backgroundColor: colors.surface,
     borderRadius: borderRadius.lg,
