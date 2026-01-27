@@ -2,6 +2,7 @@ import { useAuth } from './hooks/useAuth';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { UsersPage } from './pages/UsersPage';
+import { InvestorReportPage } from './pages/InvestorReportPage';
 import { useState } from 'react';
 
 export default function App() {
@@ -39,16 +40,23 @@ export default function App() {
         >
           Dashboard
         </button>
-        <button 
-          onClick={() => setCurrentPage('users')} 
+        <button
+          onClick={() => setCurrentPage('users')}
           style={{ background: currentPage === 'users' ? '#FF6B35' : 'transparent', border: 'none', color: '#fff', padding: '8px 16px', borderRadius: '6px', cursor: 'pointer' }}
         >
           Users
         </button>
+        <button
+          onClick={() => setCurrentPage('investor')}
+          style={{ background: currentPage === 'investor' ? '#FF6B35' : 'transparent', border: 'none', color: '#fff', padding: '8px 16px', borderRadius: '6px', cursor: 'pointer' }}
+        >
+          Investor Report
+        </button>
       </nav>
-      
+
       {currentPage === 'dashboard' && <DashboardPage />}
       {currentPage === 'users' && <UsersPage />}
+      {currentPage === 'investor' && <InvestorReportPage />}
     </div>
   );
 }
