@@ -5,8 +5,6 @@ import type {
   AnalysisRequest,
   AnalysisResponse,
   TechniqueAnalysis,
-  TechniqueScore,
-  RootCauseAnalysis,
 } from '@/types';
 
 class AnalysisService {
@@ -51,12 +49,17 @@ class AnalysisService {
 
       if (error) {
         console.error('Analysis API error:', error);
-        // Return mock analysis for development
-        return this.getMockAnalysis(user.id, uploadResult.url || '');
+        return {
+          success: false,
+          error: error.message || 'Analysis service is temporarily unavailable. Please try again.'
+        };
       }
 
       if (!data || !data.analysis) {
-        return this.getMockAnalysis(user.id, uploadResult.url || '');
+        return {
+          success: false,
+          error: 'Unable to analyze video. Please ensure good lighting and try again.'
+        };
       }
 
       // 5. Store analysis in database
@@ -143,82 +146,6 @@ class AnalysisService {
     };
   }
 
-  private getMockAnalysis(userId: string, videoUrl: string): AnalysisResponse {
-    const mockTechniqueScores: TechniqueScore[] = [
-      {
-        category: 'stance',
-        score: 72,
-        feedback: 'Good base width but could improve weight distribution',
-        strengths: ['Solid foundation', 'Good knee bend'],
-        improvements: ['Distribute weight more evenly', 'Keep rear heel slightly raised'],
-      },
-      {
-        category: 'guard',
-        score: 68,
-        feedback: 'Guard position needs attention',
-        strengths: ['Hands are up'],
-        improvements: ['Keep elbows tighter to body', 'Chin down more'],
-      },
-      {
-        category: 'jab',
-        score: 75,
-        feedback: 'Solid jab technique with room for improvement',
-        strengths: ['Good extension', 'Quick return'],
-        improvements: ['Rotate fist at end of punch', 'Keep shoulder up for protection'],
-      },
-      {
-        category: 'footwork',
-        score: 60,
-        feedback: 'Footwork needs more work',
-        strengths: ['Stays balanced'],
-        improvements: ['Smaller steps', 'Don\'t cross feet'],
-      },
-    ];
-
-    const mockRootCauses: RootCauseAnalysis[] = [
-      {
-        cause: 'weight_distribution',
-        severity: 'medium',
-        description: 'Weight tends to shift too far forward during punches',
-        impact: 'Reduces power and recovery speed',
-        recommendedDrills: ['stance_check', 'shadow_boxing'],
-      },
-      {
-        cause: 'elbow_flare',
-        severity: 'low',
-        description: 'Elbows occasionally flare out from body',
-        impact: 'Creates openings for body shots',
-        recommendedDrills: ['guard_position', 'mirror_drill'],
-      },
-    ];
-
-    const mockAnalysis: TechniqueAnalysis = {
-      id: `analysis_${Date.now()}`,
-      userId,
-      videoUrl,
-      overallScore: 69,
-      stance: 'orthodox',
-      techniqueScores: mockTechniqueScores,
-      rootCauses: mockRootCauses,
-      summary:
-        'Overall solid fundamentals with good potential. Focus on maintaining proper weight distribution throughout combinations and keeping the guard tight. Your jab shows good speed and extension.',
-      topStrengths: [
-        'Good jab extension and return',
-        'Solid stance foundation',
-        'Maintains balance during movement',
-      ],
-      priorityImprovements: [
-        'Keep weight centered during combinations',
-        'Tighten elbow position in guard',
-        'Work on smaller, quicker footwork steps',
-      ],
-      recommendedDrills: ['stance_check', 'guard_position', 'jab_drill', 'ladder_drill'],
-      createdAt: new Date().toISOString(),
-      analyzedAt: new Date().toISOString(),
-    };
-
-    return { success: true, analysis: mockAnalysis };
-  }
 }
 
 export const analysisService = new AnalysisService();

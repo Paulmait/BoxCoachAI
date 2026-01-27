@@ -18,6 +18,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAppStore } from '@/store/useAppStore';
 import { authService } from '@/services/auth';
 import { biometricsService } from '@/services/biometrics';
+import { supabase } from '@/services/supabase';
 import { APP_CONFIG } from '@/constants/config';
 import { DELETE_DATA_CONFIRMATION } from '@/constants/legal';
 import { colors, spacing, fontSize, borderRadius } from '@/constants/theme';
@@ -48,11 +49,19 @@ export function SettingsScreen() {
 
       const result = await biometricsService.authenticate();
       if (result.success) {
-        updatePreferences({ biometricsEnabled: true });
+        // Store session refresh token for biometric login
+        const refreshToken = await authService.getCurrentRefreshToken();
+        if (refreshToken && user?.email) {
+          await biometricsService.storeSession(refreshToken, user.email);
+          updatePreferences({ biometricsEnabled: true });
+        } else {
+          Alert.alert('Error', 'Could not save session for biometric login.');
+        }
       } else {
         Alert.alert('Authentication Failed', 'Could not enable biometrics.');
       }
     } else {
+      await biometricsService.clearSession();
       updatePreferences({ biometricsEnabled: false });
     }
   };
@@ -82,15 +91,32 @@ export function SettingsScreen() {
           onPress: async () => {
             setIsDeletingData(true);
             try {
-              // In production, this would call an API endpoint to delete user data
-              // For now, we'll just sign out and show a confirmation
-              await authService.signOut();
-              Alert.alert(
-                'Request Submitted',
-                `Your data deletion request has been submitted. Please contact ${APP_CONFIG.privacyEmail} if you need assistance.`
-              );
+              // Call the delete-user-data edge function
+              const { data, error } = await supabase.functions.invoke('delete-user-data', {
+                body: { confirmDelete: true },
+              });
+
+              if (error) {
+                throw new Error(error.message);
+              }
+
+              if (data?.success) {
+                // Clear local session and biometric data
+                await biometricsService.clearSession();
+                await authService.signOut();
+                Alert.alert(
+                  'Data Deleted',
+                  'Your account and all associated data have been permanently deleted.'
+                );
+              } else {
+                throw new Error(data?.error || 'Deletion failed');
+              }
             } catch (error) {
-              Alert.alert('Error', 'Failed to submit deletion request. Please try again.');
+              console.error('Delete data error:', error);
+              Alert.alert(
+                'Deletion Failed',
+                `We couldn't complete your request. Please contact ${APP_CONFIG.privacyEmail} for manual deletion.`
+              );
             } finally {
               setIsDeletingData(false);
             }

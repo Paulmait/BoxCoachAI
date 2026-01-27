@@ -1,8 +1,14 @@
 // Health Integration Service
-// Note: Full HealthKit/Health Connect integration requires native modules
-// This provides a mock interface that can be connected to actual health APIs
+// STATUS: Coming Soon - Native health integration pending
+// Full HealthKit/Health Connect integration requires native modules:
+// - iOS: react-native-health package
+// - Android: expo-health-connect or react-native-health-connect
+// Current implementation provides mock interface for UI development
 
 import { Platform } from 'react-native';
+
+// Feature flag - set to true when native health integration is implemented
+export const HEALTH_INTEGRATION_ENABLED = false;
 import type {
   BoxingWorkout,
   HealthPermissions,
@@ -27,8 +33,19 @@ let permissions: HealthPermissions = {
  * Check if health integration is available on this platform
  */
 export function isHealthAvailable(): boolean {
-  // Health integration is only available on iOS (HealthKit) and Android (Health Connect)
+  // Health integration requires native modules that are not yet implemented
+  // Return false until HEALTH_INTEGRATION_ENABLED is set to true
+  if (!HEALTH_INTEGRATION_ENABLED) {
+    return false;
+  }
   return Platform.OS === 'ios' || Platform.OS === 'android';
+}
+
+/**
+ * Check if health integration is coming soon (platform supports it but not implemented)
+ */
+export function isHealthComingSoon(): boolean {
+  return !HEALTH_INTEGRATION_ENABLED && (Platform.OS === 'ios' || Platform.OS === 'android');
 }
 
 /**

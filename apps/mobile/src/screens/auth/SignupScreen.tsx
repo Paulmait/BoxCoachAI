@@ -17,6 +17,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { authService } from '@/services/auth';
 import { colors, spacing, fontSize, borderRadius } from '@/constants/theme';
+import { isValidEmail, validatePassword, getAuthErrorMessage } from '@/utils/validation';
 import type { AuthScreenProps } from '@/navigation/types';
 
 type NavigationProp = AuthScreenProps<'Signup'>['navigation'];
@@ -30,9 +31,16 @@ export function SignupScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
+  const passwordValidation = validatePassword(password);
+
   const handleSignup = async () => {
     if (!email.trim() || !password.trim()) {
       Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      Alert.alert('Invalid Email', 'Please enter a valid email address');
       return;
     }
 
@@ -41,8 +49,8 @@ export function SignupScreen() {
       return;
     }
 
-    if (password.length < 8) {
-      Alert.alert('Error', 'Password must be at least 8 characters');
+    if (!passwordValidation.isValid) {
+      Alert.alert('Weak Password', passwordValidation.errors[0]);
       return;
     }
 
@@ -61,10 +69,10 @@ export function SignupScreen() {
           [{ text: 'OK', onPress: () => navigation.navigate('Login') }]
         );
       } else {
-        Alert.alert('Signup Failed', result.error || 'Please try again');
+        Alert.alert('Signup Failed', getAuthErrorMessage(result.error || 'Please try again'));
       }
     } catch (error) {
-      Alert.alert('Error', 'An unexpected error occurred');
+      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -134,11 +142,27 @@ export function SignupScreen() {
             <View style={styles.passwordRequirements}>
               <Text style={styles.requirementText}>
                 <Ionicons
-                  name={password.length >= 8 ? 'checkmark-circle' : 'ellipse-outline'}
+                  name={passwordValidation.hasMinLength ? 'checkmark-circle' : 'ellipse-outline'}
                   size={14}
-                  color={password.length >= 8 ? colors.success : colors.textTertiary}
+                  color={passwordValidation.hasMinLength ? colors.success : colors.textTertiary}
                 />{' '}
                 At least 8 characters
+              </Text>
+              <Text style={styles.requirementText}>
+                <Ionicons
+                  name={passwordValidation.hasUppercase ? 'checkmark-circle' : 'ellipse-outline'}
+                  size={14}
+                  color={passwordValidation.hasUppercase ? colors.success : colors.textTertiary}
+                />{' '}
+                One uppercase letter
+              </Text>
+              <Text style={styles.requirementText}>
+                <Ionicons
+                  name={passwordValidation.hasNumber ? 'checkmark-circle' : 'ellipse-outline'}
+                  size={14}
+                  color={passwordValidation.hasNumber ? colors.success : colors.textTertiary}
+                />{' '}
+                One number
               </Text>
             </View>
 

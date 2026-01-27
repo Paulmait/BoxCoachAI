@@ -6,12 +6,12 @@ interface BiometricResult {
   error?: string;
 }
 
-interface StoredCredentials {
+interface StoredSession {
+  refreshToken: string;
   email: string;
-  password: string;
 }
 
-const CREDENTIALS_KEY = 'boxcoach_biometric_credentials';
+const SESSION_KEY = 'boxcoach_biometric_session';
 
 class BiometricsService {
   async isAvailable(): Promise<boolean> {
@@ -59,33 +59,33 @@ class BiometricsService {
     }
   }
 
-  async storeCredentials(email: string, password: string): Promise<boolean> {
+  async storeSession(refreshToken: string, email: string): Promise<boolean> {
     try {
-      const credentials: StoredCredentials = { email, password };
-      await SecureStore.setItemAsync(CREDENTIALS_KEY, JSON.stringify(credentials));
+      const session: StoredSession = { refreshToken, email };
+      await SecureStore.setItemAsync(SESSION_KEY, JSON.stringify(session));
       return true;
     } catch (error) {
-      console.error('Failed to store credentials:', error);
+      console.error('Failed to store session:', error);
       return false;
     }
   }
 
-  async getStoredCredentials(): Promise<StoredCredentials | null> {
+  async getStoredSession(): Promise<StoredSession | null> {
     try {
-      const data = await SecureStore.getItemAsync(CREDENTIALS_KEY);
+      const data = await SecureStore.getItemAsync(SESSION_KEY);
       if (!data) return null;
-      return JSON.parse(data) as StoredCredentials;
+      return JSON.parse(data) as StoredSession;
     } catch (error) {
-      console.error('Failed to get stored credentials:', error);
+      console.error('Failed to get stored session:', error);
       return null;
     }
   }
 
-  async clearCredentials(): Promise<void> {
+  async clearSession(): Promise<void> {
     try {
-      await SecureStore.deleteItemAsync(CREDENTIALS_KEY);
+      await SecureStore.deleteItemAsync(SESSION_KEY);
     } catch (error) {
-      console.error('Failed to clear credentials:', error);
+      console.error('Failed to clear session:', error);
     }
   }
 

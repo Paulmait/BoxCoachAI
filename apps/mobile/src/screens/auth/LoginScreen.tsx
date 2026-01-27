@@ -18,6 +18,7 @@ import { authService } from '@/services/auth';
 import { biometricsService } from '@/services/biometrics';
 import { useAppStore } from '@/store/useAppStore';
 import { colors, spacing, fontSize, borderRadius } from '@/constants/theme';
+import { isValidEmail, getAuthErrorMessage } from '@/utils/validation';
 import type { AuthScreenProps } from '@/navigation/types';
 
 type NavigationProp = AuthScreenProps<'Login'>['navigation'];
@@ -36,14 +37,19 @@ export function LoginScreen() {
       return;
     }
 
+    if (!isValidEmail(email)) {
+      Alert.alert('Invalid Email', 'Please enter a valid email address');
+      return;
+    }
+
     setIsLoading(true);
     try {
       const result = await authService.signIn(email.trim(), password);
       if (!result.success) {
-        Alert.alert('Login Failed', result.error || 'Invalid credentials');
+        Alert.alert('Login Failed', getAuthErrorMessage(result.error || 'Invalid credentials'));
       }
     } catch (error) {
-      Alert.alert('Error', 'An unexpected error occurred');
+      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -57,17 +63,17 @@ export function LoginScreen() {
 
     const result = await biometricsService.authenticate();
     if (result.success) {
-      const storedCredentials = await biometricsService.getStoredCredentials();
-      if (storedCredentials) {
+      const storedSession = await biometricsService.getStoredSession();
+      if (storedSession) {
         setIsLoading(true);
-        const loginResult = await authService.signIn(
-          storedCredentials.email,
-          storedCredentials.password
-        );
+        const loginResult = await authService.restoreSessionWithToken(storedSession.refreshToken);
         setIsLoading(false);
         if (!loginResult.success) {
-          Alert.alert('Login Failed', loginResult.error);
+          Alert.alert('Session Expired', 'Please sign in with your email and password');
+          await biometricsService.clearSession();
         }
+      } else {
+        Alert.alert('Biometrics Setup Required', 'Please sign in first, then enable biometrics in settings');
       }
     }
   };

@@ -4,8 +4,59 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 const ANTHROPIC_API_KEY = Deno.env.get('ANTHROPIC_API_KEY') || '';
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL') || '';
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
+const REVENUECAT_API_KEY = Deno.env.get('REVENUECAT_API_KEY') || '';
 
 const FREE_DAILY_LIMIT = 3;
+const REVENUECAT_API_URL = 'https://api.revenuecat.com/v1';
+const PREMIUM_ENTITLEMENT = 'premium';
+
+/**
+ * Check if user has premium subscription via RevenueCat
+ */
+async function checkPremiumStatus(userId: string): Promise<boolean> {
+  // If no RevenueCat API key configured, default to non-premium
+  if (!REVENUECAT_API_KEY) {
+    console.warn('RevenueCat API key not configured');
+    return false;
+  }
+
+  try {
+    const response = await fetch(
+      `${REVENUECAT_API_URL}/subscribers/${encodeURIComponent(userId)}`,
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${REVENUECAT_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      // User not found in RevenueCat = no subscription
+      if (response.status === 404) {
+        return false;
+      }
+      console.error('RevenueCat API error:', response.status);
+      return false;
+    }
+
+    const data = await response.json();
+    const entitlements = data.subscriber?.entitlements || {};
+
+    // Check if user has active premium entitlement
+    const premiumEntitlement = entitlements[PREMIUM_ENTITLEMENT];
+    if (premiumEntitlement) {
+      const expiresDate = new Date(premiumEntitlement.expires_date);
+      return expiresDate > new Date();
+    }
+
+    return false;
+  } catch (error) {
+    console.error('Failed to check subscription status:', error);
+    return false;
+  }
+}
 
 const BOXING_ANALYSIS_PROMPT = `You are an expert boxing coach analyzing video frames of a boxer's technique. Analyze the frames provided and give detailed, constructive feedback.
 
@@ -63,7 +114,7 @@ serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, {
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://boxcoach.ai',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Authorization, Content-Type',
       },
@@ -94,7 +145,10 @@ serve(async (req: Request) => {
       });
     }
 
-    // Check rate limit (skip for premium users - you'd check subscription status here)
+    // Check subscription status via RevenueCat
+    const isPremium = await checkPremiumStatus(user.id);
+
+    // Check rate limit (skip for premium users)
     const { data: rateLimit } = await supabase
       .from('rate_limits')
       .select('analyses_count')
@@ -102,11 +156,12 @@ serve(async (req: Request) => {
       .eq('date', new Date().toISOString().split('T')[0])
       .single();
 
-    // For non-premium users, check limit
-    // In production, you'd check RevenueCat subscription status
-    const isPremium = false; // TODO: Check actual subscription
     if (!isPremium && rateLimit && rateLimit.analyses_count >= FREE_DAILY_LIMIT) {
-      return new Response(JSON.stringify({ error: 'Daily limit reached' }), {
+      return new Response(JSON.stringify({
+        error: 'Daily limit reached',
+        limit: FREE_DAILY_LIMIT,
+        isPremium: false,
+      }), {
         status: 429,
         headers: { 'Content-Type': 'application/json' },
       });
@@ -210,7 +265,7 @@ serve(async (req: Request) => {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://boxcoach.ai',
       },
     });
   } catch (error) {

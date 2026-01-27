@@ -5,6 +5,7 @@ import { useAppStore } from '@/store/useAppStore';
 import { AuthNavigator } from './AuthNavigator';
 import { MainNavigator } from './MainNavigator';
 import { OnboardingScreen } from '@/screens/OnboardingScreen';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { colors } from '@/constants/theme';
 import type { RootStackParamList } from './types';
 
@@ -15,20 +16,22 @@ export function RootNavigator() {
   const hasCompletedOnboarding = useAppStore((state) => state.hasCompletedOnboarding);
 
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        contentStyle: { backgroundColor: colors.background },
-        animation: 'fade',
-      }}
-    >
-      {!hasCompletedOnboarding ? (
-        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-      ) : !user ? (
-        <Stack.Screen name="Auth" component={AuthNavigator} />
-      ) : (
-        <Stack.Screen name="Main" component={MainNavigator} />
-      )}
-    </Stack.Navigator>
+    <ErrorBoundary>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: colors.background },
+          animation: 'fade',
+        }}
+      >
+        {!hasCompletedOnboarding ? (
+          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+        ) : !user ? (
+          <Stack.Screen name="Auth" component={AuthNavigator} />
+        ) : (
+          <Stack.Screen name="Main" component={MainNavigator} />
+        )}
+      </Stack.Navigator>
+    </ErrorBoundary>
   );
 }

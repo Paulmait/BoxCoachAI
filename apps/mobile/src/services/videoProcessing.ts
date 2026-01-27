@@ -1,5 +1,6 @@
 import * as VideoThumbnails from 'expo-video-thumbnails';
 import * as FileSystem from 'expo-file-system';
+import { Audio } from 'expo-av';
 import { Image } from 'react-native';
 
 interface CompressedFrame {
@@ -90,12 +91,24 @@ class VideoProcessingService {
     }
   }
 
-  async getVideoDuration(_videoUri: string): Promise<number> {
-    // expo-av can be used to get video duration, but for simplicity
-    // we'll estimate based on file size or use a default
-    // In a real implementation, you'd use expo-av's Video component
-    // or a native module to get the actual duration
-    return 10000; // Default 10 seconds
+  async getVideoDuration(videoUri: string): Promise<number> {
+    try {
+      const { sound, status } = await Audio.Sound.createAsync(
+        { uri: videoUri },
+        { shouldPlay: false }
+      );
+
+      if (status.isLoaded && status.durationMillis) {
+        await sound.unloadAsync();
+        return status.durationMillis;
+      }
+
+      await sound.unloadAsync();
+      return 10000; // Default 10 seconds if duration not available
+    } catch (error) {
+      console.warn('Could not get video duration, using default:', error);
+      return 10000; // Default 10 seconds
+    }
   }
 
   private getImageDimensions(uri: string): Promise<{ width: number; height: number }> {

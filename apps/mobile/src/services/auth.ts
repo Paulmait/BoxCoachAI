@@ -89,6 +89,38 @@ class AuthService {
     return data.session;
   }
 
+  async restoreSessionWithToken(refreshToken: string): Promise<AuthResult> {
+    try {
+      const { data, error } = await supabase.auth.setSession({
+        access_token: '', // Will be refreshed
+        refresh_token: refreshToken,
+      });
+
+      if (error) {
+        return { success: false, error: error.message };
+      }
+
+      if (data.user && data.session) {
+        const user = await this.loadUserData(data.user.id, data.user.email || '');
+        useAppStore.getState().setUser(user);
+        return { success: true, user };
+      }
+
+      return { success: false, error: 'Session restoration failed' };
+    } catch (error) {
+      return { success: false, error: 'An unexpected error occurred' };
+    }
+  }
+
+  async getCurrentRefreshToken(): Promise<string | null> {
+    try {
+      const { data } = await supabase.auth.getSession();
+      return data.session?.refresh_token || null;
+    } catch {
+      return null;
+    }
+  }
+
   private async createProfile(userId: string, email: string): Promise<void> {
     const { error } = await supabase.from('profiles').insert({
       id: userId,

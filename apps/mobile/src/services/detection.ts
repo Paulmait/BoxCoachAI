@@ -23,8 +23,11 @@ class DetectionService {
       }
 
       if (!data || !data.people) {
-        // If edge function not deployed, use mock detection
-        return this.getMockDetection();
+        return {
+          success: false,
+          people: [],
+          error: 'Detection service unavailable. Please try again.',
+        };
       }
 
       return {
@@ -33,32 +36,12 @@ class DetectionService {
       };
     } catch (error) {
       console.error('Detection failed:', error);
-      // Return mock data for development
-      return this.getMockDetection();
+      return {
+        success: false,
+        people: [],
+        error: 'Failed to detect people in video. Please ensure good lighting.',
+      };
     }
-  }
-
-  private getMockDetection(): DetectionResponse {
-    // Mock detection for development/testing
-    // Returns a single person in the center of the frame
-    const mockPeople: DetectedPerson[] = [
-      {
-        id: 'person_1',
-        boundingBox: {
-          x: 25,
-          y: 10,
-          width: 50,
-          height: 80,
-        },
-        confidence: 0.95,
-        label: 'center',
-      },
-    ];
-
-    return {
-      success: true,
-      people: mockPeople,
-    };
   }
 
   async trackPerson(

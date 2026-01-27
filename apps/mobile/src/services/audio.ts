@@ -1,5 +1,5 @@
 // Audio Service for Timer Sounds
-import { Audio } from 'expo-av';
+import { Audio, AVPlaybackSource } from 'expo-av';
 import type { SoundType } from '@/types/audio';
 
 // Sound objects cache
@@ -7,8 +7,15 @@ const sounds: Map<SoundType, Audio.Sound> = new Map();
 let isInitialized = false;
 let soundEnabled = true;
 
-// Sound files - using built-in system sounds as fallback
-// In production, you'd add actual audio files to assets/audio/
+// Sound file mappings
+const soundFiles: Record<SoundType, AVPlaybackSource> = {
+  bell_start: require('../../assets/audio/bell_start.wav'),
+  bell_end: require('../../assets/audio/bell_end.wav'),
+  warning: require('../../assets/audio/warning.wav'),
+  countdown: require('../../assets/audio/countdown.wav'),
+  success: require('../../assets/audio/success.wav'),
+  error: require('../../assets/audio/error.wav'),
+};
 
 /**
  * Initialize the audio service
@@ -44,8 +51,6 @@ export function isSoundEnabled(): boolean {
 
 /**
  * Play a sound by type
- * Note: Using expo-av for audio playback
- * For actual implementation, you would load audio files from assets
  */
 export async function playSound(type: SoundType): Promise<void> {
   if (!soundEnabled) return;
@@ -55,12 +60,14 @@ export async function playSound(type: SoundType): Promise<void> {
       await initAudioService();
     }
 
-    // Create and play a simple tone
-    // In production, replace with actual audio file loading:
-    // const { sound } = await Audio.Sound.createAsync(require('../../assets/audio/bell.mp3'));
+    const soundFile = soundFiles[type];
+    if (!soundFile) {
+      console.warn(`Sound file not found for type: ${type}`);
+      return;
+    }
 
     const { sound } = await Audio.Sound.createAsync(
-      { uri: generateToneUri(type) },
+      soundFile,
       { shouldPlay: true, volume: 1.0 }
     );
 
@@ -75,18 +82,8 @@ export async function playSound(type: SoundType): Promise<void> {
       }
     });
   } catch (error) {
-    console.debug('Sound playback failed (expected on simulator):', error);
+    console.debug('Sound playback failed:', error);
   }
-}
-
-/**
- * Generate a data URI for a simple tone
- * This is a placeholder - in production use actual audio files
- */
-function generateToneUri(_type: SoundType): string {
-  // For now, return empty - will fail gracefully
-  // In production, you would return an actual audio file URI
-  return '';
 }
 
 /**
