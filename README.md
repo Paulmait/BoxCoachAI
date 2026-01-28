@@ -50,7 +50,7 @@ When users are paused/suspended:
 - Auto-unsuspend when pause period expires
 
 ### Database Schema Highlights
-- `profiles`: User data with suspension fields (is_suspended, suspension_reason, suspended_at)
+- `profiles`: User data with suspension fields (is_suspended, suspension_reason, suspended_at, paused_until)
 - `analyses`: Video analysis results and scores
 - `drill_completions`: Completed drills tracking
 - `admin_audit_log`: All admin actions logged
@@ -58,6 +58,9 @@ When users are paused/suspended:
 - `user_violations`: Reported violations queue
 - `app_metrics`: Daily analytics for investor reports
 - `revenue_events`: RevenueCat webhook data
+- `user_cohorts`: Cohort tracking for retention analysis
+- `feature_usage`: Feature usage tracking
+- `user_sessions`: Session duration tracking
 
 ## Tech Stack
 
@@ -95,12 +98,13 @@ boxcoach-ai/
 │           └── hooks/        # Auth hook
 │
 ├── supabase/
-│   ├── migrations/           # Database schema (8 migrations)
+│   ├── migrations/           # Database schema (9 migrations)
 │   │   ├── 20260127000004_admin_system.sql
 │   │   ├── 20260127000005_analytics_cron.sql
 │   │   ├── 20260127000006_acquisition_analytics.sql
 │   │   ├── 20260127000007_admin_security.sql
-│   │   └── 20260127000008_suspended_user_rls.sql
+│   │   ├── 20260127000008_suspended_user_rls.sql
+│   │   └── 20260127000009_performance_improvements.sql
 │   └── functions/            # Edge functions
 │       ├── analyze-boxing/   # AI analysis
 │       ├── detect-boxers/    # Person detection
@@ -185,15 +189,23 @@ supabase secrets set ANTHROPIC_API_KEY=your-api-key
 
 ## Testing
 
+### Environment Setup for Scripts
+Create `scripts/.env` with:
+```env
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+ADMIN_EMAIL=your-admin-email
+ADMIN_PASSWORD=your-admin-password
+```
+
 ### Full System Test
 ```bash
-# Set SUPABASE_SERVICE_KEY environment variable first
 node scripts/test-full-system.js
 ```
 
 ### Suspension Test
 ```bash
-# Set SUPABASE_SERVICE_KEY environment variable first
 node scripts/test-suspension.js
 ```
 
@@ -223,21 +235,34 @@ eas build --platform android --profile production
 
 ## Recent Updates
 
-1. **Admin Security** (Jan 2026)
-   - Password rotation enforcement
-   - Login attempt tracking
+1. **Security Hardening** (Jan 27, 2026)
+   - Removed all hardcoded secrets from codebase
+   - All scripts now use environment variables
+   - Rotated exposed Supabase service role key
+   - CI lint and typecheck passing
+
+2. **Performance Improvements** (Jan 27, 2026)
+   - Added `paused_until` column for reliable pause expiration
+   - Optimized analytics queries with proper indexes
+   - Improved daily metrics and retention calculations
+   - Robust pause handling (no more text parsing)
+
+3. **Admin Security** (Jan 2026)
+   - Password rotation enforcement (6 months)
+   - Login attempt tracking with lockout
    - Audit logging for all admin actions
 
-2. **User Suspension System** (Jan 2026)
-   - Pause (temporary, 1-72 hours)
+4. **User Suspension System** (Jan 2026)
+   - Pause (temporary, 1-72 hours with `paused_until` timestamp)
    - Suspend (permanent until restored)
    - Ban (delete user and all data)
-   - SuspendedScreen shows reason and duration
+   - SuspendedScreen shows reason and countdown
    - RLS policies block data access for suspended users
+   - Auto-unsuspend when pause expires
 
-3. **Analytics & Investor Reporting** (Jan 2026)
+5. **Analytics & Investor Reporting** (Jan 2026)
    - Daily metrics calculation via pg_cron
-   - Cohort analysis
+   - Cohort analysis and retention tracking
    - Revenue tracking via RevenueCat webhook
    - Export to CSV for investor reports
 
