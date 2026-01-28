@@ -111,7 +111,7 @@ async function loginAsUser(email, password) {
 async function testSuspension(userId) {
   log('\n🔒 Testing SUSPEND functionality...', 'info');
 
-  // 1. Suspend the user
+  // 1. Suspend the user (permanent suspension - no paused_until)
   const suspendReason = 'Test suspension - violation of terms';
   const { error: suspendError } = await adminSupabase
     .from('profiles')
@@ -119,6 +119,7 @@ async function testSuspension(userId) {
       is_suspended: true,
       suspension_reason: suspendReason,
       suspended_at: new Date().toISOString(),
+      paused_until: null,
     })
     .eq('id', userId);
 
@@ -127,14 +128,14 @@ async function testSuspension(userId) {
   // 2. Verify suspension in database
   const { data: profile } = await adminSupabase
     .from('profiles')
-    .select('is_suspended, suspension_reason')
+    .select('is_suspended, suspension_reason, paused_until')
     .eq('id', userId)
     .single();
 
   recordResult(
     'Verify suspension in database',
-    profile?.is_suspended === true && profile?.suspension_reason === suspendReason,
-    `is_suspended: ${profile?.is_suspended}, reason: ${profile?.suspension_reason}`
+    profile?.is_suspended === true && profile?.suspension_reason === suspendReason && profile?.paused_until === null,
+    `is_suspended: ${profile?.is_suspended}, reason: ${profile?.suspension_reason}, paused_until: ${profile?.paused_until}`
   );
 
   // 3. Unsuspend user
@@ -144,6 +145,7 @@ async function testSuspension(userId) {
       is_suspended: false,
       suspension_reason: null,
       suspended_at: null,
+      paused_until: null,
     })
     .eq('id', userId);
 
@@ -155,6 +157,7 @@ async function testPause(userId) {
 
   const pauseHours = 1;
   const pauseReason = `Temporarily paused for ${pauseHours} hours`;
+  const pauseUntil = new Date(Date.now() + pauseHours * 60 * 60 * 1000);
 
   // 1. Pause the user
   const { error: pauseError } = await adminSupabase
@@ -163,6 +166,7 @@ async function testPause(userId) {
       is_suspended: true,
       suspension_reason: pauseReason,
       suspended_at: new Date().toISOString(),
+      paused_until: pauseUntil.toISOString(),
     })
     .eq('id', userId);
 
@@ -171,18 +175,16 @@ async function testPause(userId) {
   // 2. Verify pause in database
   const { data: profile } = await adminSupabase
     .from('profiles')
-    .select('is_suspended, suspension_reason, suspended_at')
+    .select('is_suspended, suspension_reason, suspended_at, paused_until')
     .eq('id', userId)
     .single();
 
-  const isPaused = profile?.is_suspended === true && profile?.suspension_reason?.includes('hours');
-  recordResult('Verify pause in database', isPaused, `reason: ${profile?.suspension_reason}`);
+  const isPaused = profile?.is_suspended === true && profile?.paused_until != null;
+  recordResult('Verify pause in database', isPaused, `paused_until: ${profile?.paused_until}`);
 
-  // 3. Calculate expected end time
-  if (profile?.suspended_at) {
-    const suspendedAt = new Date(profile.suspended_at);
-    const pauseEndTime = new Date(suspendedAt.getTime() + pauseHours * 60 * 60 * 1000);
-    log(`  Pause ends at: ${pauseEndTime.toISOString()}`, 'info');
+  // 3. Show expected end time
+  if (profile?.paused_until) {
+    log(`  Pause ends at: ${profile.paused_until}`, 'info');
   }
 
   // 4. Clean up - unsuspend
@@ -192,6 +194,7 @@ async function testPause(userId) {
       is_suspended: false,
       suspension_reason: null,
       suspended_at: null,
+      paused_until: null,
     })
     .eq('id', userId);
 }
@@ -218,13 +221,14 @@ async function testDataAccessBlocking(testUser) {
   const insertWorkedBefore = !insertBeforeError || insertBeforeError.message.includes('violates');
   log(`  Pre-suspension insert attempt: ${insertBeforeError?.message || 'Success'}`, 'info');
 
-  // Now suspend the user
+  // Now suspend the user (permanent - no paused_until)
   await adminSupabase
     .from('profiles')
     .update({
       is_suspended: true,
       suspension_reason: 'Test suspension for RLS check',
       suspended_at: new Date().toISOString(),
+      paused_until: null,
     })
     .eq('id', testUser.id);
 
@@ -277,6 +281,7 @@ async function testDataAccessBlocking(testUser) {
       is_suspended: false,
       suspension_reason: null,
       suspended_at: null,
+      paused_until: null,
     })
     .eq('id', testUser.id);
 }

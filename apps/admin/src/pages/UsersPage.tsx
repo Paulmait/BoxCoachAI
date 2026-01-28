@@ -67,6 +67,7 @@ export function UsersPage() {
         is_suspended: true,
         suspension_reason: `Temporarily paused for ${hours} hours`,
         suspended_at: new Date().toISOString(),
+        paused_until: pauseUntil.toISOString(),
       })
       .eq('id', userId);
 
@@ -83,6 +84,7 @@ export function UsersPage() {
         is_suspended: true,
         suspension_reason: reason,
         suspended_at: new Date().toISOString(),
+        paused_until: null, // Permanent suspension has no expiration
       })
       .eq('id', userId);
 
@@ -99,6 +101,7 @@ export function UsersPage() {
         is_suspended: false,
         suspension_reason: null,
         suspended_at: null,
+        paused_until: null,
       })
       .eq('id', userId);
 

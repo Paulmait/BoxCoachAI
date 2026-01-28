@@ -20,6 +20,8 @@ export interface Profile {
   role: 'user' | 'admin' | 'super_admin';
   is_suspended: boolean;
   suspension_reason: string | null;
+  suspended_at: string | null;
+  paused_until: string | null;
   experience_level: string;
   created_at: string;
 }
