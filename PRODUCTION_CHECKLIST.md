@@ -47,7 +47,7 @@
 ## ⚠️ Requires Manual Setup
 
 ### 1. Storage Bucket (Supabase Dashboard)
-Go to: https://supabase.com/dashboard/project/bvyzvqzpmlqvnkujjaao/storage/buckets
+Go to: https://supabase.com/dashboard/project/YOUR_PROJECT_ID/storage/buckets
 
 1. Click "New bucket"
 2. Name: `videos`

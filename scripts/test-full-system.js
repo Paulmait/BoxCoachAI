@@ -6,11 +6,16 @@
 const https = require('https');
 
 // Configuration - Load from environment variables
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://bvyzvqzpmlqvnkujjaao.supabase.co';
+const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 // Validate required environment variables
+if (!SUPABASE_URL) {
+  console.error('ERROR: SUPABASE_URL environment variable is required');
+  console.log('Set it with: export SUPABASE_URL="your-supabase-url"');
+  process.exit(1);
+}
 if (!SUPABASE_ANON_KEY) {
   console.error('ERROR: SUPABASE_ANON_KEY environment variable is required');
   console.log('Set it with: export SUPABASE_ANON_KEY="your-anon-key"');
@@ -354,10 +359,19 @@ async function testEdgeFunctions() {
 async function testAdminAccess() {
   console.log('\n=== TEST 12: Admin User Access ===');
 
+  // Get admin credentials from environment
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  if (!adminEmail || !adminPassword) {
+    console.log('SKIP: ADMIN_EMAIL and ADMIN_PASSWORD env vars required');
+    return true; // Non-critical test
+  }
+
   // Login as admin
   const loginResult = await makeRequest('/auth/v1/token?grant_type=password', 'POST', {
-    email: 'guampaul@gmail.com',
-    password: 'BoxC0ach!AI#2026$Secure',
+    email: adminEmail,
+    password: adminPassword,
   });
 
   if (loginResult.status !== 200) {

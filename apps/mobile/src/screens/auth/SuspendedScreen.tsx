@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  ScrollView,
-} from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -23,9 +17,7 @@ export function SuspendedScreen({ suspensionInfo }: SuspendedScreenProps) {
   const suspension = suspensionInfo || user?.suspension;
 
   const isPaused = suspension?.pausedUntil != null;
-  const pausedUntilDate = suspension?.pausedUntil
-    ? new Date(suspension.pausedUntil)
-    : null;
+  const pausedUntilDate = suspension?.pausedUntil ? new Date(suspension.pausedUntil) : null;
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return '';
@@ -74,9 +66,7 @@ export function SuspendedScreen({ suspensionInfo }: SuspendedScreenProps) {
           />
         </View>
 
-        <Text style={styles.title}>
-          {isPaused ? 'Account Paused' : 'Account Suspended'}
-        </Text>
+        <Text style={styles.title}>{isPaused ? 'Account Paused' : 'Account Suspended'}</Text>
 
         <Text style={styles.subtitle}>
           {isPaused
@@ -93,12 +83,8 @@ export function SuspendedScreen({ suspensionInfo }: SuspendedScreenProps) {
 
         {suspension?.suspendedAt && (
           <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>
-              {isPaused ? 'Paused On' : 'Suspended On'}
-            </Text>
-            <Text style={styles.infoValue}>
-              {formatDate(suspension.suspendedAt)}
-            </Text>
+            <Text style={styles.infoLabel}>{isPaused ? 'Paused On' : 'Suspended On'}</Text>
+            <Text style={styles.infoValue}>{formatDate(suspension.suspendedAt)}</Text>
           </View>
         )}
 
@@ -106,9 +92,7 @@ export function SuspendedScreen({ suspensionInfo }: SuspendedScreenProps) {
           <>
             <View style={styles.infoCard}>
               <Text style={styles.infoLabel}>Access Restored On</Text>
-              <Text style={styles.infoValue}>
-                {formatDate(suspension?.pausedUntil)}
-              </Text>
+              <Text style={styles.infoValue}>{formatDate(suspension?.pausedUntil)}</Text>
             </View>
 
             <View style={[styles.infoCard, styles.highlightCard]}>
@@ -129,10 +113,7 @@ export function SuspendedScreen({ suspensionInfo }: SuspendedScreenProps) {
 
         <View style={styles.actions}>
           {!isPaused && (
-            <Pressable
-              style={styles.supportButton}
-              onPress={handleContactSupport}
-            >
+            <Pressable style={styles.supportButton} onPress={handleContactSupport}>
               <Ionicons name="mail-outline" size={20} color={colors.primary} />
               <Text style={styles.supportButtonText}>Contact Support</Text>
             </Pressable>

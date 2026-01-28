@@ -7,12 +7,31 @@
 
 const https = require('https');
 
-const SUPABASE_URL = 'https://bvyzvqzpmlqvnkujjaao.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2eXp2cXpwbWxxdm5rdWpqYWFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk0NzMyNzQsImV4cCI6MjA4NTA0OTI3NH0.4kOcVWaq8jTE4HgpPua1WkqfYqIDahLZFnZ8832uI4M';
+// Configuration - Load from environment variables
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 
-// Admin credentials
-const ADMIN_EMAIL = 'guampaul@gmail.com';
-const ADMIN_PASSWORD = 'BoxC0ach!AI#2026$Secure';
+// Admin credentials - Load from environment variables
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
+// Validate required environment variables
+if (!SUPABASE_URL) {
+  console.error('ERROR: SUPABASE_URL environment variable is required');
+  process.exit(1);
+}
+if (!SUPABASE_ANON_KEY) {
+  console.error('ERROR: SUPABASE_ANON_KEY environment variable is required');
+  process.exit(1);
+}
+if (!ADMIN_EMAIL) {
+  console.error('ERROR: ADMIN_EMAIL environment variable is required');
+  process.exit(1);
+}
+if (!ADMIN_PASSWORD) {
+  console.error('ERROR: ADMIN_PASSWORD environment variable is required');
+  process.exit(1);
+}
 
 async function makeRequest(path, method, body, authToken = null) {
   return new Promise((resolve, reject) => {
@@ -52,7 +71,6 @@ async function makeRequest(path, method, body, authToken = null) {
 async function createAdminUser() {
   console.log('\\n1. Creating admin user...');
   console.log(`   Email: ${ADMIN_EMAIL}`);
-  console.log(`   Password: ${ADMIN_PASSWORD}`);
 
   const result = await makeRequest('/auth/v1/signup', 'POST', {
     email: ADMIN_EMAIL,
@@ -182,10 +200,10 @@ async function main() {
   console.log('='.repeat(50));
   console.log(`\\nAdmin Account:`);
   console.log(`  Email: ${ADMIN_EMAIL}`);
-  console.log(`  Password: ${ADMIN_PASSWORD}`);
+  console.log(`  Password: [set via ADMIN_PASSWORD env var]`);
   console.log(`\\nSupabase Dashboard:`);
-  console.log(`  ${SUPABASE_URL.replace('.supabase.co', '')}/project/bvyzvqzpmlqvnkujjaao`);
-  console.log(`\\nNote: Save these credentials securely!`);
+  console.log(`  ${SUPABASE_URL}`);
+  console.log(`\\nNote: Keep your credentials secure!`);
 }
 
 main().catch(console.error);

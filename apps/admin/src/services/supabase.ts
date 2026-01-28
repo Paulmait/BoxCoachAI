@@ -10,6 +10,9 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// Export URL for edge function calls
+export const supabaseUrl = SUPABASE_URL;
+
 export interface Profile {
   id: string;
   email: string;

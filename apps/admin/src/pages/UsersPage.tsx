@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase, Profile } from '../services/supabase';
+import { supabase, supabaseUrl, Profile } from '../services/supabase';
 import { useAuth } from '../hooks/useAuth';
 
 export function UsersPage() {
@@ -125,7 +125,7 @@ export function UsersPage() {
 
     const { data: session } = await supabase.auth.getSession();
     const response = await fetch(
-      'https://bvyzvqzpmlqvnkujjaao.supabase.co/functions/v1/delete-user-data',
+      `${supabaseUrl}/functions/v1/delete-user-data`,
       {
         method: 'POST',
         headers: {

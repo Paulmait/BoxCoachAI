@@ -6,11 +6,11 @@
 // Current implementation provides mock interface for UI development
 
 import { Platform } from 'react-native';
+import type { BoxingWorkout, HealthPermissions, HealthSettings, WorkoutType } from '@/types/health';
+import { estimateCalories } from '@/utils/calories';
 
 // Feature flag - set to true when native health integration is implemented
 export const HEALTH_INTEGRATION_ENABLED = false;
-import type { BoxingWorkout, HealthPermissions, HealthSettings, WorkoutType } from '@/types/health';
-import { estimateCalories } from '@/utils/calories';
 
 let healthSettings: HealthSettings = {
   syncEnabled: false,

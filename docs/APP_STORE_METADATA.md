@@ -202,8 +202,10 @@ Boxing Coach AI Premium
 # App Store Review Notes
 
 ## Demo Account
-Email: guampaul@gmail.com
-Password: BoxC0ach!AI#2026$Secure
+Email: [Contact developer for demo credentials]
+Password: [Contact developer for demo credentials]
+
+Note: For App Store review, credentials are provided separately via App Store Connect.
 
 ## Review Notes
 This app uses AI (Anthropic Claude) to analyze boxing technique from user-submitted videos.

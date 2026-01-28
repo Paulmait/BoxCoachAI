@@ -5,16 +5,20 @@
 
 const https = require('https');
 
-const SUPABASE_URL = 'https://bvyzvqzpmlqvnkujjaao.supabase.co';
-
-// Get service role key from environment
+// Configuration - Load from environment variables
+const SUPABASE_URL = process.env.SUPABASE_URL;
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!SUPABASE_URL) {
+  console.log('ERROR: SUPABASE_URL environment variable required');
+  process.exit(1);
+}
 
 if (!SERVICE_ROLE_KEY) {
   console.log('ERROR: SUPABASE_SERVICE_ROLE_KEY environment variable required');
   console.log('');
   console.log('To create the bucket manually, go to Supabase Dashboard:');
-  console.log('1. Go to https://supabase.com/dashboard/project/bvyzvqzpmlqvnkujjaao/storage/buckets');
+  console.log('1. Go to your project Storage > Buckets');
   console.log('2. Click "New bucket"');
   console.log('3. Name: videos');
   console.log('4. Public bucket: OFF (unchecked)');
